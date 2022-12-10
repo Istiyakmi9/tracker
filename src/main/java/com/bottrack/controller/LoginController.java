@@ -17,6 +17,9 @@ public class LoginController {
 
     @GetMapping("/message")
     public String getMessage(){
-        return loginService.authenticateUser(new UserDetail());
+
+        var userDetail = new UserDetail();
+        userDetail.setUserName("New user");
+        return loginService.authenticateUser(userDetail);
     }
 }
