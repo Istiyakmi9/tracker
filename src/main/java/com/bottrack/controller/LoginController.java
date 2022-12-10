@@ -19,7 +19,7 @@ public class LoginController {
     public String getMessage(){
 
         var userDetail = new UserDetail();
-        userDetail.setUserName("New user");
+        userDetail.setUserName("New user 123");
         return loginService.authenticateUser(userDetail);
     }
 }
