@@ -11,4 +11,6 @@ public interface IUserService {
     String updateUserService(User user, long userId) throws IOException;
     ArrayList<User> getAllUserService();
 
+    public ArrayList<User> getByUserIdService(long userId);
+    public String deleteByUserIdService(long userId);
 }

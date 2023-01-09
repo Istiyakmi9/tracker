@@ -34,4 +34,14 @@ public class UserService implements IUserService {
         var result = this.userRepository.getAllUserRepository();
         return result;
     }
+
+    public ArrayList<User> getByUserIdService(long userId) {
+        var result = this.userRepository.getByUserIdRepository(userId);
+        return result;
+    }
+
+    public String deleteByUserIdService(long userId) {
+        var result = this.userRepository.deleteByUserIdRepository(userId);
+        return result;
+    }
 }

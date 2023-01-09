@@ -14,30 +14,39 @@ public class User {
     @Column(name = "UserId")
     Long userId;
 
-    @Column(name = "UserName" )
-    String userName;
-
-    @Column(name = "Password")
-    String password;
-
     @Column(name = "FirstName")
     String firstName;
 
     @Column(name = "LastName")
     String lastName;
 
-    @Column(name = "Address")
-    String address;
+
+    @Column(name = "DOB")
+    Date dob;
+
+    @Column(name = "Mobile")
+    String mobile;
 
     @Column(name = "Email")
     String email;
 
-    @Column(name = "MobileNumber")
-    String mobileNumber;
+    @Column(name = "FirstAddress")
+    String firstAddress;
 
-    @Column(name = "CompanyName")
-    String companyName;
+    @Column(name = "SecondAddress")
+    String secondAddress;
 
+    @Column(name = "State")
+    String state;
+
+    @Column(name = "City")
+    String city;
+
+    @Column(name = "Country")
+    String country;
+
+    @Transient
+    long adminId;
 
     @Column(name = "CreatedBy")
     Long createdBy;
@@ -51,39 +60,12 @@ public class User {
     @Column(name = "UpdatedOn")
     Date updatedOn;
 
-    @Transient
-    long adminId;
-
-    public long getAdminId() {
-        return adminId;
-    }
-
-    public void setAdminId(long adminId) {
-        this.adminId = adminId;
-    }
-
     public Long getUserId() {
         return userId;
     }
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getFirstName() {
@@ -102,12 +84,20 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getAddress() {
-        return address;
+    public Date getDob() {
+        return dob;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public String getEmail() {
@@ -118,20 +108,52 @@ public class User {
         this.email = email;
     }
 
-    public String getMobileNumber() {
-        return mobileNumber;
+    public String getFirstAddress() {
+        return firstAddress;
     }
 
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
+    public void setFirstAddress(String firstAddress) {
+        this.firstAddress = firstAddress;
     }
 
-    public String getCompanyName() {
-        return companyName;
+    public String getSecondAddress() {
+        return secondAddress;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public void setSecondAddress(String secondAddress) {
+        this.secondAddress = secondAddress;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public long getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(long adminId) {
+        this.adminId = adminId;
     }
 
     public Long getCreatedBy() {
@@ -150,16 +172,19 @@ public class User {
         this.updatedBy = updatedBy;
     }
 
-    public User(Long userId, String userName, String password, String firstName, String lastName, String address, String email, String mobileNumber, String companyName, Long createdBy, Long updatedBy) {
+    public User(Long userId, String firstName, String lastName, Date dob, String mobile, String email, String firstAddress, String secondAddress, String state, String city, String country, long adminId, Long createdBy, Long updatedBy) {
         this.userId = userId;
-        this.userName = userName;
-        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.address = address;
+        this.dob = dob;
+        this.mobile = mobile;
         this.email = email;
-        this.mobileNumber = mobileNumber;
-        this.companyName = companyName;
+        this.firstAddress = firstAddress;
+        this.secondAddress = secondAddress;
+        this.state = state;
+        this.city = city;
+        this.country = country;
+        this.adminId = adminId;
         this.createdBy = createdBy;
         this.updatedBy = updatedBy;
     }
@@ -171,19 +196,21 @@ public class User {
     public String toString() {
         return "User{" +
                 "userId=" + userId +
-                ", userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", address='" + address + '\'' +
+                ", dob=" + dob +
+                ", mobile='" + mobile + '\'' +
                 ", email='" + email + '\'' +
-                ", mobileNumber='" + mobileNumber + '\'' +
-                ", companyName='" + companyName + '\'' +
+                ", firstAddress='" + firstAddress + '\'' +
+                ", secondAddress='" + secondAddress + '\'' +
+                ", state='" + state + '\'' +
+                ", city='" + city + '\'' +
+                ", country='" + country + '\'' +
+                ", adminId=" + adminId +
                 ", createdBy=" + createdBy +
                 ", updatedBy=" + updatedBy +
                 ", createdOn=" + createdOn +
                 ", updatedOn=" + updatedOn +
-                ", adminId=" + adminId +
                 '}';
     }
 }
