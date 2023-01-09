@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.ParameterMode;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -27,14 +28,16 @@ public class UserRepository implements IUserRepository {
             tx = session.beginTransaction();
             ProcedureCall query = session.createStoredProcedureCall("sp_User_InsUpdate");
             query.registerParameter("_UserId", long.class, ParameterMode.IN).bindValue(user.getUserId());
-            query.registerParameter("_UserName", String.class, ParameterMode.IN).bindValue(user.getUserName());
-            query.registerParameter("_Password", String.class, ParameterMode.IN).bindValue(user.getPassword());
             query.registerParameter("_FirstName", String.class, ParameterMode.IN).bindValue(user.getFirstName());
             query.registerParameter("_LastName", String.class, ParameterMode.IN).bindValue(user.getLastName());
-            query.registerParameter("_Address", String.class, ParameterMode.IN).bindValue(user.getAddress());
+            query.registerParameter("_DOB", Date.class, ParameterMode.IN).bindValue(user.getDob());
+            query.registerParameter("_Mobile", String.class, ParameterMode.IN).bindValue(user.getMobile());
             query.registerParameter("_Email", String.class, ParameterMode.IN).bindValue(user.getEmail());
-            query.registerParameter("_MobileNumber", String.class, ParameterMode.IN).bindValue(user.getMobileNumber());
-            query.registerParameter("_CompanyName", String.class, ParameterMode.IN).bindValue(user.getCompanyName());
+            query.registerParameter("_FirstAddress", String.class, ParameterMode.IN).bindValue(user.getFirstAddress());
+            query.registerParameter("_SecondAddress", String.class, ParameterMode.IN).bindValue(user.getSecondAddress());
+            query.registerParameter("_State", String.class, ParameterMode.IN).bindValue(user.getState());
+            query.registerParameter("_City", String.class, ParameterMode.IN).bindValue(user.getCity());
+            query.registerParameter("_Country", String.class, ParameterMode.IN).bindValue(user.getCountry());
             query.registerParameter("_AdminId", long.class, ParameterMode.IN).bindValue(user.getAdminId());
             query.registerParameter("_ProcessingResult", String.class, ParameterMode.OUT);
             String result = query.getOutputParameterValue("_ProcessingResult").toString();
@@ -62,14 +65,16 @@ public class UserRepository implements IUserRepository {
             tx = session.beginTransaction();
             ProcedureCall query = session.createStoredProcedureCall("sp_User_InsUpdate");
             query.registerParameter("_UserId", long.class, ParameterMode.IN).bindValue(user.getUserId());
-            query.registerParameter("_UserName", String.class, ParameterMode.IN).bindValue(user.getUserName());
-            query.registerParameter("_Password", String.class, ParameterMode.IN).bindValue(user.getPassword());
             query.registerParameter("_FirstName", String.class, ParameterMode.IN).bindValue(user.getFirstName());
             query.registerParameter("_LastName", String.class, ParameterMode.IN).bindValue(user.getLastName());
-            query.registerParameter("_Address", String.class, ParameterMode.IN).bindValue(user.getAddress());
+            query.registerParameter("_DOB", Date.class, ParameterMode.IN).bindValue(user.getDob());
+            query.registerParameter("_Mobile", String.class, ParameterMode.IN).bindValue(user.getMobile());
             query.registerParameter("_Email", String.class, ParameterMode.IN).bindValue(user.getEmail());
-            query.registerParameter("_MobileNumber", String.class, ParameterMode.IN).bindValue(user.getMobileNumber());
-            query.registerParameter("_CompanyName", String.class, ParameterMode.IN).bindValue(user.getCompanyName());
+            query.registerParameter("_FirstAddress", String.class, ParameterMode.IN).bindValue(user.getFirstAddress());
+            query.registerParameter("_SecondAddress", String.class, ParameterMode.IN).bindValue(user.getSecondAddress());
+            query.registerParameter("_State", String.class, ParameterMode.IN).bindValue(user.getState());
+            query.registerParameter("_City", String.class, ParameterMode.IN).bindValue(user.getCity());
+            query.registerParameter("_Country", String.class, ParameterMode.IN).bindValue(user.getCountry());
             query.registerParameter("_AdminId", long.class, ParameterMode.IN).bindValue(user.getAdminId());
             query.registerParameter("_ProcessingResult", String.class, ParameterMode.OUT);
             String result = query.getOutputParameterValue("_ProcessingResult").toString();
@@ -106,5 +111,50 @@ public class UserRepository implements IUserRepository {
             }
         }
         return (ArrayList<User>) result;
+    }
+
+    public ArrayList<User> getByUserIdRepository(long userId) {
+        List<User> result = null;
+        Transaction tx = null;
+        SessionFactory factory = new Configuration().configure().buildSessionFactory();
+        System.out.println(factory);
+        try (Session session = factory.openSession()) {
+            tx = session.beginTransaction();
+            Query<User> query = session.createSQLQuery("Call sp_User_getByUserId(:userId)").addEntity(User.class);
+            query.setParameter("userId", userId);
+            result = query.list();
+            System.out.println(result);
+            tx.commit();
+            session.close();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            if (tx != null){
+                tx.rollback();
+            }
+        }
+        return (ArrayList<User>) result;
+    }
+
+    public String deleteByUserIdRepository(long userId) {
+        int result = 0;
+        Transaction tx =null;
+        SessionFactory factory = new Configuration().configure().buildSessionFactory();
+        System.out.println(factory);
+        try(Session session = factory.openSession()){
+            tx = session.beginTransaction();
+            Query<User> query = session.createSQLQuery("Call sp_User_deleteByUserId(:userId)").addEntity(User.class);
+            query.setParameter("userId", userId);
+            result = query.executeUpdate();
+            System.out.println("Row affected" + result);
+            tx.commit();
+            session.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            if(tx!=null)
+            {
+                tx.rollback();
+            }
+        }
+        return "User Data deleted";
     }
 }

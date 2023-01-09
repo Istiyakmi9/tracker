@@ -34,5 +34,16 @@ public class UserController extends BaseController {
         return BuildOk(result);
     }
 
+    @GetMapping("/getByUserId/{userId}")
+    public ResponseModal getByUserId(@PathVariable ("userId") long userId){
+        var result = this.userService.getByUserIdService(userId);
+        return BuildOk(result);
+    }
+
+    @DeleteMapping("/deleteByUserId/{userId}")
+    public ResponseModal deleteByUserId(@PathVariable ("userId") long userId){
+        var result = this.userService.deleteByUserIdService(userId);
+        return  BuildOk(result);
+    }
 
 }
