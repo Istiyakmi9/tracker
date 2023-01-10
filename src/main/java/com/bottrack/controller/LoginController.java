@@ -1,24 +1,24 @@
 package com.bottrack.controller;
 
-import com.bottrack.repositorymodel.UserDetail;
-import com.bottrack.service.ILoginService;
+import com.bottrack.model.Login;
+import com.bottrack.repositorymodel.ResponseModal;
+import com.bottrack.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
-@RequestMapping("api")
-public class LoginController {
+@RequestMapping("/login")
+public class LoginController extends BaseController{
 
     @Autowired
-    ILoginService loginService;
+    LoginService loginService;
 
-    @GetMapping("/message")
-    public String getMessage(){
-
-        var userDetail = new UserDetail();
-        userDetail.setUserName("New user 123");
-        return loginService.authenticateUser(userDetail);
+    @PutMapping("/updateLoginByUserId/{userId}")
+    public ResponseModal updateLoginByUserId(@RequestBody Login login, @PathVariable("userId") long userId) throws IOException {
+        var result = this.loginService.updateLoginByUserIdService(login, userId);
+        return BuildOk(result);
     }
 
 
