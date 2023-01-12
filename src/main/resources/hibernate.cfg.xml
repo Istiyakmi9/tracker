@@ -16,6 +16,8 @@
         <mapping class="com.bottrack.model.User" />
         <mapping class="com.bottrack.model.Roles" />
         <mapping class="com.bottrack.model.Menu" />
+        <mapping class="com.bottrack.model.Login" />
+        <mapping class="com.bottrack.model.VehicleDetail" />
 
     </session-factory>
 </hibernate-configuration>
