@@ -1,7 +1,7 @@
 package com.bottrack.service;
 
 import com.bottrack.model.Login;
-import com.bottrack.repository.LoginRepository;
+import com.bottrack.repositoryinterfaces.ILoginRepository;
 import com.bottrack.serviceinterfaces.ILoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import java.io.IOException;
 public class LoginService implements ILoginService {
 
     @Autowired
-    LoginRepository loginRepository;
+    ILoginRepository loginRepository;
 
 
     public String updateLoginByUserIdService(Login login, long userId) throws IOException {
@@ -23,5 +23,16 @@ public class LoginService implements ILoginService {
                 throw new IOException("Unable to update Login");
         }
         return result;
+    }
+
+    public Login authenticateUserService(String emailOrMobile) {
+        Login login = null;
+        try {
+            login = loginRepository.authenticateUserRepository(emailOrMobile);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return login;
     }
 }
