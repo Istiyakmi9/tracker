@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class LoginService implements ILoginService {
@@ -25,14 +26,14 @@ public class LoginService implements ILoginService {
         return result;
     }
 
-    public Login authenticateUserService(String emailOrMobile) {
-        Login login = null;
+    public List<Login> authenticateUserService(String emailOrMobile) {
+        List<Login> logins = null;
         try {
-            login = loginRepository.authenticateUserRepository(emailOrMobile);
+            logins = loginRepository.authenticateUserRepository(emailOrMobile);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        return login;
+        return logins;
     }
 }

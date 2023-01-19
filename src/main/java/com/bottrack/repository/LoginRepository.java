@@ -56,7 +56,7 @@ public class LoginRepository implements ILoginRepository {
         return "Login data updated successfully";
     }
 
-    public Login authenticateUserRepository(String emailOrMobile) {
+    public List<Login> authenticateUserRepository(String emailOrMobile) throws Exception {
         List<Login> loginDetails;
         tx = null;
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
@@ -64,8 +64,8 @@ public class LoginRepository implements ILoginRepository {
             this.tx = session.beginTransaction();
             Query<Login> context = session.createSQLQuery("Call sp_authenticateuser_by_mobile_or_email(:mobile, :email)")
                     .addEntity(Login.class)
-                    .setParameter("mobile", "9995577722")
-                    .setParameter("email", null);
+                    .setParameter("mobile", emailOrMobile)
+                    .setParameter("email", emailOrMobile);
 
             loginDetails = context.list();
 
@@ -77,6 +77,9 @@ public class LoginRepository implements ILoginRepository {
             throw e;
         }
 
-        return loginDetails.stream().findFirst().get();
+        if (loginDetails == null || loginDetails.isEmpty())
+            throw new Exception("Invalid user name provided.");
+
+        return loginDetails;
     }
 }
