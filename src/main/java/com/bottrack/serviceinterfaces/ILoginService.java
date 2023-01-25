@@ -8,5 +8,5 @@ import java.util.List;
 public interface ILoginService {
 
     String updateLoginByUserIdService(Login login, long userId) throws IOException;
-    List<Login> authenticateUserService(String emailOrMobile);
+    Login authenticateUserService(String emailOrMobile);
 }

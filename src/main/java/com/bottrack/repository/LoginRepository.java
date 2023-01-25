@@ -1,26 +1,22 @@
 package com.bottrack.repository;
 
 import com.bottrack.model.Login;
-import com.bottrack.model.User;
-import com.bottrack.repositoryinterfaces.ILoginRepository;
-import com.bottrack.repositorymodel.UserDetail;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.procedure.ProcedureCall;
-import org.hibernate.query.Query;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.ParameterMode;
-import javax.persistence.PersistenceContext;
-import java.util.List;
 
 @Repository
-public class LoginRepository implements ILoginRepository {
+public interface LoginRepository extends JpaRepository<Login, Long> {
 
-    private Transaction tx;
+    @Query(value = "select l from Login l where l.mobile = :mobile")
+    Login getLoginByMobile(@Param("mobile") String mobile);
+
+    @Query(value = "update Login set userName = :userName where mobile = :mobile")
+    String updateLoginByUserIdRepository(@Param("userName") String userName, @Param("mobile") String mobile);
+
+  /*  private Transaction tx;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -46,7 +42,7 @@ public class LoginRepository implements ILoginRepository {
             System.out.println("Status" + result);
             tx.commit();
             session.close();
-        }   catch(Exception e){
+        } catch(Exception e) {
             System.out.println(e.getMessage());
             if (tx != null){
                 tx.rollback();
@@ -56,8 +52,8 @@ public class LoginRepository implements ILoginRepository {
         return "Login data updated successfully";
     }
 
-    public List<Login> authenticateUserRepository(String emailOrMobile) throws Exception {
-        List<Login> loginDetails;
+    public Login authenticateUserRepository(String emailOrMobile) throws Exception {
+        Login loginDetails;
         tx = null;
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
         try(Session session = sessionFactory.openSession()) {
@@ -67,7 +63,7 @@ public class LoginRepository implements ILoginRepository {
                     .setParameter("mobile", emailOrMobile)
                     .setParameter("email", emailOrMobile);
 
-            loginDetails = context.list();
+            loginDetails = context.uniqueResult();
 
             this.tx.commit();
             session.close();
@@ -77,9 +73,9 @@ public class LoginRepository implements ILoginRepository {
             throw e;
         }
 
-        if (loginDetails == null || loginDetails.isEmpty())
+        if (loginDetails == null)
             throw new Exception("Invalid user name provided.");
 
         return loginDetails;
-    }
+    }*/
 }
