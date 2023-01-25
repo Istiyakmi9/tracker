@@ -11,8 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class JwtUserDetailsServices implements UserDetailsService {
@@ -23,11 +22,8 @@ public class JwtUserDetailsServices implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String mobileOrEmail) throws UsernameNotFoundException {
         UserDetails userDetails = null;
-        List<Login> loginList = loginService.authenticateUserService(mobileOrEmail);
+        Login login = loginService.authenticateUserService(mobileOrEmail);
         try {
-            Optional<Login> loginOptional = loginList.stream().findFirst();
-            Login login = loginOptional.get();
-
             if (login.getMobile().equals(mobileOrEmail)  || login.getEmail().equals(mobileOrEmail)) {
                 userDetails = new User(
                         login.getMobile(),

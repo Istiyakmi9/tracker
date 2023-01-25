@@ -8,5 +8,5 @@ public interface ILoginRepository {
 
 
     public String updateLoginByUserIdRepository(Login login, long userId);
-    public List<Login> authenticateUserRepository(String emailOrMobile) throws Exception;
+    public Login authenticateUserRepository(String emailOrMobile) throws Exception;
 }
