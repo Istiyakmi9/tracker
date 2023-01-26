@@ -1,5 +1,17 @@
+FROM maven:3.6.3-jdk-11-openj9 AS MAVEN
+
+MAINTAINER BOTTOMHALF
+
+COPY pom.xml /build/
+COPY src /build/src/
+
+WORKDIR /build/
+RUN mvn package
+
 FROM openjdk:11
+WORKDIR /app
 EXPOSE 8080
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+
+COPY --from=MAVEN /build/target/tracker.jar /app/
+
+ENTRYPOINT ["java", "-jar", "tracker.jar"]
