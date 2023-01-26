@@ -12,6 +12,6 @@ FROM openjdk:11
 WORKDIR /app
 EXPOSE 8080
 
-COPY --from=MAVEN /build/target/tracker.jar /app/
+COPY --from=MAVEN /build/target/bot-tracker.jar /app/
 
-ENTRYPOINT ["java", "-jar", "tracker.jar"]
+ENTRYPOINT ["java", "-jar", "bot-tracker.jar"]
