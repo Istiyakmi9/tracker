@@ -45,5 +45,4 @@ public class UserController extends BaseController {
         var result = this.userService.deleteByUserIdService(userId);
         return  BuildOk(result);
     }
-
 }

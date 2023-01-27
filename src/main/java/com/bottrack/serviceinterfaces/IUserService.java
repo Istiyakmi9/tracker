@@ -1,16 +1,17 @@
 package com.bottrack.serviceinterfaces;
 
 import com.bottrack.model.User;
+import org.springframework.http.ResponseEntity;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public interface IUserService {
 
     String addUserService(User user) throws Exception;
-    String updateUserService(User user, long userId) throws IOException;
-    ArrayList<User> getAllUserService();
+    public ResponseEntity<Object> updateUserService(User user, long userId);
+    public List<User> getAllUserService();
 
-    public ArrayList<User> getByUserIdService(long userId);
+    public Optional<User> getByUserIdService(long userId);
     public String deleteByUserIdService(long userId);
 }
