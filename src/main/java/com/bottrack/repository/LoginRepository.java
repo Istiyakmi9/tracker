@@ -15,8 +15,4 @@ public interface LoginRepository extends JpaRepository<Login, Long> {
 
     @Query(value = "select l from Login l where l.mobile = :mobile")
     Login getLoginByMobile(@Param("mobile") String mobile);
-
-
-
-
 }

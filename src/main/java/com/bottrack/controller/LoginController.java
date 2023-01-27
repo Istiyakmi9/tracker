@@ -7,6 +7,7 @@ import com.bottrack.model.Login;
 import com.bottrack.model.User;
 import com.bottrack.repositorymodel.ResponseModal;
 import com.bottrack.service.LoginService;
+import com.bottrack.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +15,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -34,6 +36,9 @@ public class LoginController extends BaseController {
     @Autowired
     JwtTokenHelper jwtTokenHelper;
 
+    @Autowired
+    private UserService userService;
+
     @PutMapping("/updateLoginByUserId/{userId}")
     public ResponseModal updateLoginByUserId(@RequestBody Login login, @PathVariable("userId") long userId) throws IOException {
         var result = this.loginService.updateLoginByUserIdService(login, userId);
@@ -43,10 +48,25 @@ public class LoginController extends BaseController {
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<ApiResponse> authenticateUser(@RequestBody Login loginDetail) throws Exception {
         authenticate(loginDetail);
-
-        final UserDetails userDetails = jwtUserDetailsServices.loadUserByUsername(loginDetail.getMobile());
+        // final UserDetails userDetails = jwtUserDetailsServices.loadUserByUsername(loginDetail.getMobile());
+        final Login login = loginService.getLoginByMobile(loginDetail.getMobile());
+        final User user = validateCredential(login, loginDetail);
         String token = jwtTokenHelper.generateToken(loginDetail);
-        return ResponseEntity.ok(new ApiResponse(token));
+        return ResponseEntity.ok(ApiResponse.Ok(user, token));
+    }
+
+    private User validateCredential(Login login, Login request) throws Exception {
+        User user = null;
+        if (login != null) {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String password = encoder.encode(request.getPassword());
+            if(!encoder.matches(password, login.getPassword())) {
+                user = userService.getByUserMobileService(request.getMobile());
+            } else {
+                throw new Exception("Invalid username or password.");
+            }
+        }
+        return user;
     }
 
     private void authenticate(Login loginDetail) throws Exception {

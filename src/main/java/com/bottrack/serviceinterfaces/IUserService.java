@@ -9,9 +9,10 @@ import java.util.Optional;
 public interface IUserService {
 
     String addUserService(User user) throws Exception;
-    public ResponseEntity<Object> updateUserService(User user, long userId);
-    public List<User> getAllUserService();
+    ResponseEntity<Object> updateUserService(User user, long userId);
+    List<User> getAllUserService();
 
-    public Optional<User> getByUserIdService(long userId);
-    public String deleteByUserIdService(long userId);
+    Optional<User> getByUserIdService(long userId);
+    String deleteByUserIdService(long userId);
+    User getByUserMobileService(String mobile);
 }
