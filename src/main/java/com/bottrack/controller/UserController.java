@@ -46,9 +46,4 @@ public class UserController extends BaseController {
         return  BuildOk(result);
     }
 
-    @GetMapping("/getUserDetail/{userId}")
-    public ResponseModal getUserDetail(@PathVariable ("userId") long userId){
-        var result = this.userService.getByUserIdService(userId);
-        return BuildOk(result);
-    }
 }

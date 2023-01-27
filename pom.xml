@@ -73,7 +73,6 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<finalName>bot-tracker</finalName>
 	</build>
 
 </project>
