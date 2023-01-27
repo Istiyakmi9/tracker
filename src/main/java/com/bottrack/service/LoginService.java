@@ -35,4 +35,15 @@ public class LoginService implements ILoginService {
 
         return login;
     }
+
+    public Login getLoginByMobile(String mobile) {
+        Login login = null;
+        try {
+            login = loginRepository.getLoginByMobile(mobile);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return login;
+    }
 }

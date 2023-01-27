@@ -9,4 +9,5 @@ public interface ILoginService {
 
     String updateLoginByUserIdService(Login login, long userId) throws IOException;
     Login authenticateUserService(String emailOrMobile);
+    Login getLoginByMobile(String mobile);
 }
