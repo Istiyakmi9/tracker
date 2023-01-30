@@ -1,9 +1,11 @@
 package com.bottrack.controller;
 
+import com.bottrack.model.ApiResponse;
 import com.bottrack.model.Roles;
 import com.bottrack.repositorymodel.ResponseModal;
 import com.bottrack.service.RolesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -16,32 +18,32 @@ public class RolesController extends BaseController {
     RolesService rolesService;
 
     @PostMapping("/addRole")
-    public ResponseModal addRole(@RequestBody Roles roles){
+    public ResponseEntity<ApiResponse> addRole(@RequestBody Roles roles){
         var result = this.rolesService.addRoleService(roles);
-        return BuildOk(result);
+        return ResponseEntity.ok(ApiResponse.Ok(result));
     }
 
     @PutMapping("/updateRole/{roleId}")
-    public ResponseModal updateRole(@RequestBody Roles roles, @PathVariable("roleId") int roleId) throws IOException {
+    public ResponseEntity<ApiResponse> updateRole(@RequestBody Roles roles, @PathVariable("roleId") int roleId) throws IOException {
         var result = this.rolesService.updateRoleService(roles, roleId);
-        return BuildOk(result);
+        return ResponseEntity.ok(ApiResponse.Ok(result));
     }
 
     @GetMapping("/getAllRoles")
-    public ResponseModal getAllRoles(){
+    public ResponseEntity<ApiResponse> getAllRoles(){
         var result = this.rolesService.getAllRolesService();
-        return BuildOk(result);
+        return ResponseEntity.ok(ApiResponse.Ok(result));
     }
 
     @GetMapping("/getRolesByRoleId/{roleId}")
-    public ResponseModal getRolesByRoleId(@PathVariable("roleId") int roleId){
+    public ResponseEntity<ApiResponse> getRolesByRoleId(@PathVariable("roleId") int roleId){
         var result = this.rolesService.getRolesByIdService(roleId);
-        return BuildOk(result);
+        return ResponseEntity.ok(ApiResponse.Ok(result));
     }
 
     @DeleteMapping("/deleteRolesByRoleId/{roleId}")
-    public ResponseModal deleteRolesByRoleId(@PathVariable("roleId") int roleId){
+    public ResponseEntity<ApiResponse> deleteRolesByRoleId(@PathVariable("roleId") int roleId){
         var result = this.rolesService.deleteRolesByRoleIdService(roleId);
-        return BuildOk(result);
+        return ResponseEntity.ok(ApiResponse.Ok(result));
     }
 }

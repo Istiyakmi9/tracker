@@ -13,12 +13,6 @@ import java.util.Optional;
 @EnableAutoConfiguration
 public interface UserRepository extends JpaRepository<User, Long> {
 
-//    String addUserRepository(User user);
-//    String updateUserRepository(User user, long userId);
-//    ArrayList<User> getAllUserRepository();
-//    public ArrayList<User> getByUserIdRepository(long userId);
-//    public String deleteByUserIdRepository(long userId);
-
     @Query(value = "select u from User u where u.mobile = :mobile")
     User getByUserMobile(@Param("mobile") String mobile);
 }

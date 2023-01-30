@@ -1,11 +1,13 @@
 package com.bottrack.model;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
+
 
 @Entity
 @Table(name = "roles")
 public class Roles {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +31,6 @@ public class Roles {
 
     @Column(name = "CreatedOn")
     Date createdOn;
-
     @Column(name = "UpdatedOn")
     Date updatedOn;
 
@@ -81,13 +82,31 @@ public class Roles {
         this.updatedBy = updatedBy;
     }
 
-    public Roles(int roleId, String roleName, String description, long adminId, Long createdBy, Long updatedBy) {
+    public Date getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public Date getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public void setUpdatedOn(Date updatedOn) {
+        this.updatedOn = updatedOn;
+    }
+
+    public Roles(int roleId, String roleName, String description, long adminId, Long createdBy, Long updatedBy, Date createdOn, Date updatedOn) {
         this.roleId = roleId;
         this.roleName = roleName;
         this.description = description;
         this.adminId = adminId;
         this.createdBy = createdBy;
         this.updatedBy = updatedBy;
+        this.createdOn = createdOn;
+        this.updatedOn = updatedOn;
     }
 
     public Roles() {
