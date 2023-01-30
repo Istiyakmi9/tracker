@@ -1,7 +1,8 @@
 package com.bottrack.model;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
+
 
 @Entity
 @Table(name = "login")
@@ -114,7 +115,23 @@ public class Login {
         this.updatedBy = updatedBy;
     }
 
-    public Login(long userId, String userName, String mobile, String email, String password, int roleId, long adminId, Long createdBy, Long updatedBy) {
+    public Date getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public Date getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public void setUpdatedOn(Date updatedOn) {
+        this.updatedOn = updatedOn;
+    }
+
+    public Login(long userId, String userName, String mobile, String email, String password, int roleId, long adminId, Long createdBy, Long updatedBy, Date createdOn, Date updatedOn) {
         this.userId = userId;
         this.userName = userName;
         this.mobile = mobile;
@@ -124,6 +141,8 @@ public class Login {
         this.adminId = adminId;
         this.createdBy = createdBy;
         this.updatedBy = updatedBy;
+        this.createdOn = createdOn;
+        this.updatedOn = updatedOn;
     }
 
     public Login() {

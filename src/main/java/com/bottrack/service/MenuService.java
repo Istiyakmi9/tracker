@@ -2,46 +2,49 @@ package com.bottrack.service;
 
 import com.bottrack.model.Menu;
 import com.bottrack.repository.MenuRepository;
+import com.bottrack.serviceinterfaces.IMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
+
 
 @Service
-public class MenuService {
+public class MenuService implements IMenuService {
 
     @Autowired
     MenuRepository menuRepository;
 
     public String addMenuService(Menu menu) {
-        var result = this.menuRepository.addMenuRepository(menu);
-        return result;
+        var result = this.menuRepository.save(menu);
+        return "New menu has been added";
     }
 
-    public String updateMenuService(Menu menu, int menuId) throws IOException {
-        var result = "";
-        if (menuId > 0){
-            result = this.menuRepository.updateMenuRepository(menu, menuId);
-            if (result == null || result == "")
-                throw new IOException("Unable to update Menu data");
-        }
-        return result;
+    public ResponseEntity<Object> updateMenuService(Menu menu, int menuId) {
+        Optional<Menu> result = this.menuRepository.findById(menuId);
+        if (result.isEmpty())
+           return ResponseEntity.notFound().build();
+
+        menu.setMenuId(menuId);
+       menuRepository.save(menu);
+        return ResponseEntity.noContent().build();
     }
 
 
     public ArrayList<Menu> getAllMenuService() {
-        var result = this.menuRepository.getAllMenuRepository();
-        return result;
+        var result = this.menuRepository.findAll();
+        return (ArrayList<Menu>) result;
     }
 
-    public ArrayList<Menu> getMenuByMenuIdService(int menuId) {
-        var result = this.menuRepository.getMenuByMenuIdRepository(menuId);
+    public Optional<Menu> getMenuByMenuIdService(int menuId) {
+        var result = this.menuRepository.findById(menuId);
         return result;
     }
 
     public String deleteMenuByMenuIdService(int menuId) {
-        var result = this.menuRepository.deleteMenuByMenuIdRepository(menuId);
-        return result;
+        this.menuRepository.deleteById(menuId);
+        return "menu record has been deleted";
     }
 }

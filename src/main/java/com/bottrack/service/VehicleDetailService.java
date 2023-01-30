@@ -4,10 +4,12 @@ import com.bottrack.model.VehicleDetail;
 import com.bottrack.repository.VehicleDetailRepository;
 import com.bottrack.serviceinterfaces.IVehicleDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VehicleDetailService implements IVehicleDetailService {
@@ -17,33 +19,39 @@ public class VehicleDetailService implements IVehicleDetailService {
 
 
     public String addVehicleDetailService(VehicleDetail vehicleDetail) {
-        var result = this.vehicleDetailRepository.addVehicleDetailRepository(vehicleDetail);
+        java.util.Date utilDate = new java.util.Date();
+        var date = new java.sql.Timestamp(utilDate.getTime());
+        vehicleDetail.setCreatedOn(date);
+        var result = this.vehicleDetailRepository.save(vehicleDetail);
+        return "New VehicleDetail has been added";
+    }
+
+    public ResponseEntity<Object> updateVehicleDetailByVehicleNoService(VehicleDetail vehicleDetail, long vehicleNo) throws IOException {
+        java.util.Date utilDate = new java.util.Date();
+        var date = new java.sql.Timestamp(utilDate.getTime());
+        vehicleDetail.setCreatedOn(date);
+        Optional<VehicleDetail> result = this.vehicleDetailRepository.findById(vehicleNo);
+        if (result.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        vehicleDetail.setVehicleNo(vehicleNo);
+        vehicleDetailRepository.save(vehicleDetail);
+        return ResponseEntity.noContent().build();
+    }
+
+    public List<VehicleDetail> getAllVehicleDetailService() {
+        var result = this.vehicleDetailRepository.findAll();
         return result;
     }
 
-    public String updateVehicleDetailByVehicleNoService(VehicleDetail vehicleDetail, long vehicleNo) throws IOException {
-        var result = "";
-        if (vehicleNo > 0){
-            result = this.vehicleDetailRepository.updateVehicleDetailByVehicleNoRepository(vehicleDetail, vehicleNo);
-            if (result == null || result == "")
-                throw new IOException("Unable to update VehicleDetail");
-        }
-        return result;
-    }
-
-    public ArrayList<VehicleDetail> getAllVehicleDetailService() {
-        var result = this.vehicleDetailRepository.getAllVehicleDetailRepository();
-        return result;
-    }
-
-    public ArrayList<VehicleDetail> getVehicleDetailByVehicleNoService(long vehicleNo) {
-        var result = this.vehicleDetailRepository.getVehicleDetailByVehicleNoRepository(vehicleNo);
+    public Optional<VehicleDetail> getVehicleDetailByVehicleNoService(long vehicleNo) {
+        var result = this.vehicleDetailRepository.findById(vehicleNo);
         return result;
 
     }
 
     public String deleteVehicleDetailByVehicleNoService(long vehicleNo) {
-       var result = this.vehicleDetailRepository.deleteVehicleDetailByVehicleNoRepository(vehicleNo);
-       return result;
+       this.vehicleDetailRepository.deleteById(vehicleNo);
+       return "VehicleDetail has been deleted";
     }
 }

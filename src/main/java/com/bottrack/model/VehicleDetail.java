@@ -1,7 +1,8 @@
 package com.bottrack.model;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
+
 
 @Entity
 @Table(name = "vehicledetail")
@@ -114,7 +115,23 @@ public class VehicleDetail {
         this.updatedBy = updatedBy;
     }
 
-    public VehicleDetail(long vehicleNo, String make, String model, String varient, String vehicleType, String series, long adminId, Long createdBy, Long updatedBy) {
+    public Date getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public Date getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public void setUpdatedOn(Date updatedOn) {
+        this.updatedOn = updatedOn;
+    }
+
+    public VehicleDetail(long vehicleNo, String make, String model, String varient, String vehicleType, String series, long adminId, Long createdBy, Long updatedBy, Date createdOn, Date updatedOn) {
         this.vehicleNo = vehicleNo;
         this.make = make;
         this.model = model;
@@ -124,6 +141,8 @@ public class VehicleDetail {
         this.adminId = adminId;
         this.createdBy = createdBy;
         this.updatedBy = updatedBy;
+        this.createdOn = createdOn;
+        this.updatedOn = updatedOn;
     }
 
     public VehicleDetail() {

@@ -4,9 +4,10 @@ import com.bottrack.model.Login;
 import com.bottrack.repository.LoginRepository;
 import com.bottrack.serviceinterfaces.ILoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
+import java.util.Optional;
 
 @Service
 public class LoginService implements ILoginService {
@@ -15,14 +16,17 @@ public class LoginService implements ILoginService {
     LoginRepository loginRepository;
 
 
-    public String updateLoginByUserIdService(Login login, long userId) throws IOException {
-        var result = "";
-        if (userId > 0){
-            result = this.loginRepository.updateLoginByUserIdRepository("hello", "5854758421");
-            if (result == null || result == "")
-                throw new IOException("Unable to update Login");
-        }
-        return result;
+    public ResponseEntity<Object> updateLoginByUserIdService(Login login, long userId){
+        java.util.Date utilDate = new java.util.Date();
+        var date = new java.sql.Timestamp(utilDate.getTime());
+        login.setCreatedOn(date);
+        Optional<Login> result = this.loginRepository.findById(userId);
+        if (result.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        login.setUserId(userId);
+        loginRepository.save(login);
+        return ResponseEntity.noContent().build();
     }
 
     public Login authenticateUserService(String emailOrMobile) {
