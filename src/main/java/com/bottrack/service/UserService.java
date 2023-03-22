@@ -17,11 +17,17 @@ public class UserService implements IUserService {
     UserRepository userRepository;
 
     public String addUserService(User user) throws Exception {
+        java.util.Date utilDate = new java.util.Date();
+        var date = new java.sql.Timestamp(utilDate.getTime());
+        user.setCreatedOn(date);
         var result = this.userRepository.save(user);
         return "New user has been added";
     }
 
     public ResponseEntity<Object> updateUserService(User user, long userId) {
+        java.util.Date utilDate = new java.util.Date();
+        var date = new java.sql.Timestamp(utilDate.getTime());
+        user.setCreatedOn(date);
         Optional<User> result = this.userRepository.findById(userId);
         if (result.isEmpty())
             return ResponseEntity.notFound().build();

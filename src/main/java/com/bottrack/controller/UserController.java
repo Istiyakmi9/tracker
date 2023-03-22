@@ -19,21 +19,21 @@ public class UserController extends BaseController {
     UserService userService;
 
     @PostMapping("/addUser")
-    public ResponseModal addUser(@RequestBody User user) throws Exception {
+    public ResponseEntity<ApiResponse> addUser(@RequestBody User user) throws Exception {
         var result = this.userService.addUserService(user);
-        return BuildOk(result);
+        return ResponseEntity.ok(ApiResponse.Ok(result));
     }
 
     @PutMapping("/updateUser/{userId}")
-    public ResponseModal updateUser(@RequestBody User user, @PathVariable("userId") long userId) throws IOException {
+    public ResponseEntity<ApiResponse> updateUser(@RequestBody User user, @PathVariable("userId") long userId) throws IOException {
         var result = this.userService.updateUserService(user, userId);
-        return BuildOk(result);
+        return ResponseEntity.ok(ApiResponse.Ok(result));
     }
 
     @GetMapping("/getAllUser")
-    public ResponseModal getAllUser(){
+    public ResponseEntity<ApiResponse> getAllUser(){
         var result = this.userService.getAllUserService();
-        return BuildOk(result);
+        return ResponseEntity.ok(ApiResponse.Ok(result));
     }
 
     @GetMapping("/getByUserId/{userId}")

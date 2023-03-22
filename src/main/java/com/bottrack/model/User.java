@@ -2,7 +2,7 @@ package com.bottrack.model;
 
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 
 @Entity
@@ -172,7 +172,23 @@ public class User {
         this.updatedBy = updatedBy;
     }
 
-    public User(Long userId, String firstName, String lastName, Date dob, String mobile, String email, String firstAddress, String secondAddress, String state, String city, String country, long adminId, Long createdBy, Long updatedBy) {
+    public Date getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public Date getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public void setUpdatedOn(Date updatedOn) {
+        this.updatedOn = updatedOn;
+    }
+
+    public User(Long userId, String firstName, String lastName, Date dob, String mobile, String email, String firstAddress, String secondAddress, String state, String city, String country, long adminId, Long createdBy, Long updatedBy, Date createdOn, Date updatedOn) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -187,6 +203,8 @@ public class User {
         this.adminId = adminId;
         this.createdBy = createdBy;
         this.updatedBy = updatedBy;
+        this.createdOn = createdOn;
+        this.updatedOn = updatedOn;
     }
 
     public User() {

@@ -40,9 +40,9 @@ public class LoginController extends BaseController {
     private UserService userService;
 
     @PutMapping("/updateLoginByUserId/{userId}")
-    public ResponseModal updateLoginByUserId(@RequestBody Login login, @PathVariable("userId") long userId) throws IOException {
+    public ResponseEntity<ApiResponse> updateLoginByUserId(@RequestBody Login login, @PathVariable("userId") long userId) {
         var result = this.loginService.updateLoginByUserIdService(login, userId);
-        return BuildOk(result);
+        return ResponseEntity.ok(ApiResponse.Ok(result));
     }
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
@@ -80,5 +80,10 @@ public class LoginController extends BaseController {
         } catch (BadCredentialsException e) {
             throw new Exception("INVALID CREDENTIALS", e);
         }
+    }
+
+    private ResponseEntity<ApiResponse> getLoginDetail(){
+
+        return ResponseEntity.ok(ApiResponse.Ok(null));
     }
 }
