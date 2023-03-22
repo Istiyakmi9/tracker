@@ -81,4 +81,9 @@ public class LoginController extends BaseController {
             throw new Exception("INVALID CREDENTIALS", e);
         }
     }
+
+    private ResponseEntity<ApiResponse> getLoginDetail(){
+
+        return ResponseEntity.ok(ApiResponse.Ok(null));
+    }
 }
