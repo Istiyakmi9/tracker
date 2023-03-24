@@ -47,11 +47,14 @@ public class LoginController extends BaseController {
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<ApiResponse> authenticateUser(@RequestBody Login loginDetail) throws Exception {
-        authenticate(loginDetail);
-        // final UserDetails userDetails = jwtUserDetailsServices.loadUserByUsername(loginDetail.getMobile());
-        final Login login = loginService.getLoginByMobile(loginDetail.getMobile());
-        final User user = validateCredential(login, loginDetail);
-        String token = jwtTokenHelper.generateToken(loginDetail);
+        try {
+            authenticate(loginDetail);
+            final Login login = loginService.getLoginByMobile(loginDetail.getMobile());
+            final User user = validateCredential(login, loginDetail);
+            String token = jwtTokenHelper.generateToken(loginDetail);
+        } catch (Exception ex) {
+            throw ex;
+        }
         return ResponseEntity.ok(ApiResponse.Ok(user, token));
     }
 
