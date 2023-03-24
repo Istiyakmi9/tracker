@@ -52,10 +52,10 @@ public class LoginController extends BaseController {
             final Login login = loginService.getLoginByMobile(loginDetail.getMobile());
             final User user = validateCredential(login, loginDetail);
             String token = jwtTokenHelper.generateToken(loginDetail);
+            return ResponseEntity.ok(ApiResponse.Ok(user, token));
         } catch (Exception ex) {
             throw ex;
         }
-        return ResponseEntity.ok(ApiResponse.Ok(user, token));
     }
 
     private User validateCredential(Login login, Login request) throws Exception {
