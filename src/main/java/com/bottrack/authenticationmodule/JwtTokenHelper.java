@@ -16,7 +16,7 @@ import java.util.function.Function;
 @Component
 public class JwtTokenHelper {
 
-    @Value("jwt.secret")
+    @Value("${jwt.secret}")
     private String secret;
 
     public static final long JTW_TOKEN_VALIDITY = 1 * 60 * 60;
