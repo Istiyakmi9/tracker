@@ -39,6 +39,11 @@ public class LoginController extends BaseController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/testapi")
+    public ResponseEntity<ApiResponse> testApi() {
+        return ResponseEntity.ok(ApiResponse.Ok("Api is up and working"));
+    }
+
     @PutMapping("/updateLoginByUserId/{userId}")
     public ResponseEntity<ApiResponse> updateLoginByUserId(@RequestBody Login login, @PathVariable("userId") long userId) {
         var result = this.loginService.updateLoginByUserIdService(login, userId);
