@@ -1,6 +1,8 @@
 package com.bottrack.model;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -22,6 +24,7 @@ public class User {
 
 
     @Column(name = "DOB")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     Date dob;
 
     @Column(name = "Mobile")
@@ -55,9 +58,11 @@ public class User {
     Long updatedBy;
 
     @Column(name = "CreatedOn")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     Date createdOn;
 
     @Column(name = "UpdatedOn")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     Date updatedOn;
 
     public Long getUserId() {
@@ -88,9 +93,7 @@ public class User {
         return dob;
     }
 
-    public void setDob(Date dob) {
-        this.dob = dob;
-    }
+    public void setDob(Date dob) { this.dob = dob; }
 
     public String getMobile() {
         return mobile;
