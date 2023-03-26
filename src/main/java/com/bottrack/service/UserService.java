@@ -1,6 +1,7 @@
 package com.bottrack.service;
 
 import com.bottrack.filehandler.FileManager;
+import com.bottrack.repository.FileRepository;
 import com.bottrack.repositorymodel.FileDetail;
 import com.bottrack.model.User;
 import com.bottrack.repository.UserRepository;
@@ -21,6 +22,8 @@ public class UserService implements IUserService {
     FileManager fileManager;
     @Autowired
     FileService fileService;
+    @Autowired
+    FileRepository fileRepository;
 
     public String addUserService(User user) throws Exception {
         java.util.Date utilDate = new java.util.Date();
@@ -61,11 +64,23 @@ public class UserService implements IUserService {
 
     public Optional<User> getByUserIdService(long userId) {
         var result = this.userRepository.findById(userId);
+        if(result != null) {
+            var fileDetail = this.fileRepository.filterByName(result.get().getUserId(), "profile");
+            if(fileDetail != null) {
+                result.get().setFilePath(fileDetail.getFilePath());
+            }
+        }
         return result;
     }
 
     public User getByUserMobileService(String mobile) {
         var result = this.userRepository.getByUserMobile(mobile);
+        if(result != null) {
+            var fileDetail = this.fileRepository.filterByName(result.getUserId(), "profile");
+            if(fileDetail != null) {
+                result.setFilePath(fileDetail.getFilePath());
+            }
+        }
         return result;
     }
 
