@@ -5,6 +5,7 @@ import com.bottrack.model.ApiResponse;
 import com.bottrack.repositorymodel.ResponseModal;
 import com.bottrack.model.User;
 import com.bottrack.service.UserService;
+import com.bottrack.serviceinterfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ import java.io.IOException;
 public class UserController extends BaseController {
 
     @Autowired
-    UserService userService;
+    IUserService userService;
 
     @PostMapping("/addUser")
     public ResponseEntity<ApiResponse> addUser(@RequestBody User user) throws Exception {
@@ -25,7 +26,7 @@ public class UserController extends BaseController {
     }
 
     @PutMapping("/updateUser/{userId}")
-    public ResponseEntity<ApiResponse> updateUser(@RequestBody User user, @PathVariable("userId") long userId) throws IOException {
+    public ResponseEntity<ApiResponse> updateUser(@RequestBody User user, @PathVariable("userId") long userId) throws Exception {
         var result = this.userService.updateUserService(user, userId);
         return ResponseEntity.ok(ApiResponse.Ok(result));
     }

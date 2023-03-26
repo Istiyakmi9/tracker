@@ -1,5 +1,6 @@
 package com.bottrack.serviceinterfaces;
 
+import com.bottrack.model.ApiResponse;
 import com.bottrack.model.User;
 import org.springframework.http.ResponseEntity;
 
@@ -9,7 +10,7 @@ import java.util.Optional;
 public interface IUserService {
 
     String addUserService(User user) throws Exception;
-    ResponseEntity<Object> updateUserService(User user, long userId);
+    User updateUserService(User user, long userId) throws Exception;
     List<User> getAllUserService();
 
     Optional<User> getByUserIdService(long userId);
