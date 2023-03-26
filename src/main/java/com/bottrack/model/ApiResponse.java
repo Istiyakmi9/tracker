@@ -18,6 +18,7 @@ public class ApiResponse {
     public static ApiResponse Ok(Object data) {
         ApiResponse response = new ApiResponse();
         response.setData(data);
+        response.setStatusCode(HttpStatus.OK.value());
         response.setMessage("successfull");
         return response;
     }

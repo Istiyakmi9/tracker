@@ -1,10 +1,10 @@
 package com.bottrack.service;
 
+import com.bottrack.exceptionmanager.HandleException;
 import com.bottrack.model.User;
 import com.bottrack.repository.UserRepository;
 import com.bottrack.serviceinterfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,17 +24,22 @@ public class UserService implements IUserService {
         return "New user has been added";
     }
 
-    public ResponseEntity<Object> updateUserService(User user, long userId) {
+    public User updateUserService(User user, long userId) throws Exception {
         java.util.Date utilDate = new java.util.Date();
         var date = new java.sql.Timestamp(utilDate.getTime());
-        user.setCreatedOn(date);
+        user.setUpdatedOn(date);
         Optional<User> result = this.userRepository.findById(userId);
         if (result.isEmpty())
-            return ResponseEntity.notFound().build();
+            throw new Exception("Invalid user id passed.");
 
-        user.setUserId(userId);
-        userRepository.save(user);
-        return ResponseEntity.noContent().build();
+        user.setUpdatedBy(result.get().getUpdatedBy());
+        user.setCreatedBy(result.get().getCreatedBy());
+        user.setUpdatedOn(result.get().getUpdatedOn());
+        user.setUpdatedBy(userId);
+        var updatedData = userRepository.save(user);
+        if(updatedData == null)
+            throw new Exception("Invalid user id passed.");
+        return updatedData;
     }
 
     public List<User> getAllUserService(){
