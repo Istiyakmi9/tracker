@@ -21,6 +21,8 @@ public class FileManager {
         String name = file.getOriginalFilename();
 
         String ext = name.substring(name.lastIndexOf(".") + 1);
+        String nameOnly = name.substring(0, name.lastIndexOf("."));
+        String relativePath = Paths.get(fileStorageProperties.getUploadDir(), "user_" + String.valueOf(userId)).toString();
 
         if(name.contains(".."))
             throw new Exception("File name contain invalid character.");
@@ -32,15 +34,17 @@ public class FileManager {
             Files.createDirectories(targetDirectory);
 
         String newFileName = null;
-        if (fileName.isEmpty())
-            newFileName = fileName;
-        else
+        if (fileName.isEmpty()) {
+            fileDetail.setFileName(nameOnly);
+            newFileName = nameOnly;
+        } else {
+            fileDetail.setFileName(fileName);
             newFileName = fileName + "." + ext;
+        }
         Path targetPath = targetDirectory.resolve(newFileName);
         Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
 
-        fileDetail.setFilePath(targetPath.toString());
-        fileDetail.setFileName(newFileName);
+        fileDetail.setFilePath(relativePath);
         fileDetail.setExtension(ext);
         return fileDetail;
     }
