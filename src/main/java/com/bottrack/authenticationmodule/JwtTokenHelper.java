@@ -55,7 +55,7 @@ public class JwtTokenHelper {
                 .setClaims(claims)
                 .setSubject(userName)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JTW_TOKEN_VALIDITY * 100))
+                .setExpiration(new Date(System.currentTimeMillis() + JTW_TOKEN_VALIDITY * 1000))
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }

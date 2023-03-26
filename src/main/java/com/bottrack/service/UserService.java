@@ -1,20 +1,26 @@
 package com.bottrack.service;
 
-import com.bottrack.exceptionmanager.HandleException;
+import com.bottrack.filehandler.FileManager;
+import com.bottrack.repositorymodel.FileDetail;
 import com.bottrack.model.User;
 import com.bottrack.repository.UserRepository;
 import com.bottrack.serviceinterfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService implements IUserService {
-
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    FileManager fileManager;
+    @Autowired
+    FileService fileService;
 
     public String addUserService(User user) throws Exception {
         java.util.Date utilDate = new java.util.Date();
@@ -24,7 +30,8 @@ public class UserService implements IUserService {
         return "New user has been added";
     }
 
-    public User updateUserService(User user, long userId) throws Exception {
+    @Transactional
+    public User updateUserService(User user, MultipartFile file, long userId) throws Exception {
         java.util.Date utilDate = new java.util.Date();
         var date = new java.sql.Timestamp(utilDate.getTime());
         user.setUpdatedOn(date);
@@ -35,10 +42,15 @@ public class UserService implements IUserService {
         user.setUpdatedBy(result.get().getUpdatedBy());
         user.setCreatedBy(result.get().getCreatedBy());
         user.setUpdatedOn(result.get().getUpdatedOn());
+        user.setCreatedOn(result.get().getCreatedOn());
         user.setUpdatedBy(userId);
         var updatedData = userRepository.save(user);
         if(updatedData == null)
             throw new Exception("Invalid user id passed.");
+
+        FileDetail fileDetail = fileManager.uploadFile(file, updatedData.getUserId(), "profile");
+        fileDetail.setUserId(userId);
+        fileService.updateFileDetailByName(fileDetail);
         return updatedData;
     }
 
