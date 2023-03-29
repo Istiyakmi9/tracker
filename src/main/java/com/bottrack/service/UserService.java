@@ -8,9 +8,9 @@ import com.bottrack.repository.UserRepository;
 import com.bottrack.serviceinterfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +33,7 @@ public class UserService implements IUserService {
         return "New user has been added";
     }
 
-    @Transactional
+    @Transactional( rollbackFor = Exception.class)
     public User updateUserService(User user, MultipartFile file, long userId) throws Exception {
         java.util.Date utilDate = new java.util.Date();
         var date = new java.sql.Timestamp(utilDate.getTime());
@@ -42,19 +42,18 @@ public class UserService implements IUserService {
         if (result.isEmpty())
             throw new Exception("Invalid user id passed.");
 
-        user.setUpdatedBy(result.get().getUpdatedBy());
         user.setCreatedBy(result.get().getCreatedBy());
         user.setUpdatedOn(result.get().getUpdatedOn());
         user.setCreatedOn(result.get().getCreatedOn());
         user.setUpdatedBy(userId);
-        var updatedData = userRepository.save(user);
-        if(updatedData == null)
+        user = userRepository.save(user);
+        if(user == null)
             throw new Exception("Invalid user id passed.");
 
-        FileDetail fileDetail = fileManager.uploadFile(file, updatedData.getUserId(), "profile");
+        FileDetail fileDetail = fileManager.uploadFile(file, user.getUserId(), "profile");
         fileDetail.setUserId(userId);
         fileService.updateFileDetailByName(fileDetail);
-        return updatedData;
+        return user;
     }
 
     public List<User> getAllUserService(){
