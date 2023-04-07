@@ -21,8 +21,8 @@ public class WebCorsConfiguration  implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         WebMvcConfigurer.super.addResourceHandlers(registry);
-        registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/documents/");
+        registry.addResourceHandler("/files/**")
+                .addResourceLocations("classpath:/static/");
     }
 
     @Override
