@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +34,7 @@ public class UserService implements IUserService {
         return "New user has been added";
     }
 
-    @Transactional( rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public User updateUserService(User user, MultipartFile file, long userId) throws Exception {
         java.util.Date utilDate = new java.util.Date();
         var date = new java.sql.Timestamp(utilDate.getTime());
@@ -50,9 +51,10 @@ public class UserService implements IUserService {
         if(user == null)
             throw new Exception("Invalid user id passed.");
 
-        FileDetail fileDetail = fileManager.uploadFile(file, user.getUserId(), "profile");
+        FileDetail fileDetail = fileManager.uploadFile(file, user.getUserId(), "profile", user.getFilePath());
         fileDetail.setUserId(userId);
         fileService.updateFileDetailByName(fileDetail);
+        user.setFilePath(Paths.get(fileDetail.getFilePath(), fileDetail.getFileName() + "." + fileDetail.getExtension()).toString());
         return user;
     }
 
@@ -66,7 +68,7 @@ public class UserService implements IUserService {
         if(result != null) {
             var fileDetail = this.fileRepository.filterByName(result.get().getUserId(), "profile");
             if(fileDetail != null) {
-                result.get().setFilePath(fileDetail.getFilePath());
+                result.get().setFilePath(Paths.get(fileDetail.getFilePath(), fileDetail.getFileName() + "." + fileDetail.getExtension()).toString());
             }
         }
         return result;
