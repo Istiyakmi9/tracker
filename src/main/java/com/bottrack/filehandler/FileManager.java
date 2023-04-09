@@ -17,7 +17,7 @@ public class FileManager {
 
     public FileManager() throws IOException {
         logger.info("Getting static folder class path");
-        basePath = new ClassPathResource("static").getFile().getAbsolutePath();
+        basePath = new ClassPathResource("./").getFile().getAbsolutePath();
         logger.info("Static folder class path: " + basePath);
     }
 
