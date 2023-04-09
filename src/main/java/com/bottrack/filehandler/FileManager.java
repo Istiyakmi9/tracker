@@ -7,7 +7,10 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.*;
 
 @Component
@@ -17,7 +20,7 @@ public class FileManager {
 
     public FileManager() throws IOException {
         logger.info("Getting static folder class path");
-        basePath = new ClassPathResource("./").getFile().getAbsolutePath();
+        basePath = getClass().getClassLoader().getResource("static").getPath();
         logger.info("Static folder class path: " + basePath);
     }
 
