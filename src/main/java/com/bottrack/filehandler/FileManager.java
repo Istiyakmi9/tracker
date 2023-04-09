@@ -1,8 +1,8 @@
 package com.bottrack.filehandler;
 
 import com.bottrack.repositorymodel.FileDetail;
-import com.bottrack.model.FileStorageProperties;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,9 +12,14 @@ import java.nio.file.*;
 
 @Component
 public class FileManager {
-    private final String basePath = new ClassPathResource("static").getFile().getAbsolutePath();
+    private final Logger logger = LoggerFactory.getLogger(FileManager.class);
+    private final String basePath;
 
-    public FileManager() throws IOException { }
+    public FileManager() throws IOException {
+        logger.info("Getting static folder class path");
+        basePath = new ClassPathResource("static").getFile().getAbsolutePath();
+        logger.info("Static folder class path: " + basePath);
+    }
 
     public FileDetail uploadFile(MultipartFile file, long userId, String fileName, String existingFilePath) throws Exception {
         FileDetail fileDetail = new FileDetail();
