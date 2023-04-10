@@ -10,7 +10,6 @@ public class Roles {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "RoleId")
     int roleId;
 

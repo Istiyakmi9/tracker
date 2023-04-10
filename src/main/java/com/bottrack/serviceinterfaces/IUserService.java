@@ -12,6 +12,7 @@ public interface IUserService {
 
     String addUserService(User user) throws Exception;
     User updateUserService(User user, MultipartFile file, long userId) throws Exception;
+    User createUserService(User user) throws Exception;
     List<User> getAllUserService();
 
     Optional<User> getByUserIdService(long userId);

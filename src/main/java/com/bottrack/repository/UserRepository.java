@@ -15,4 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(value = "select u from User u where u.mobile = :mobile")
     User getByUserMobile(@Param("mobile") String mobile);
+
+    @Query(nativeQuery = true, value = "select u.* from user u order by u.UserId desc limit 1")
+    User getLastUser();
 }

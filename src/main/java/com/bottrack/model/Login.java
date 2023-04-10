@@ -9,7 +9,6 @@ import java.util.Date;
 public class Login {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "UserId")
     long userId;
 
