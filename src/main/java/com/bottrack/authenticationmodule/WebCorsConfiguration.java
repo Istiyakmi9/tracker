@@ -20,9 +20,11 @@ public class WebCorsConfiguration  implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        String resourcePath = "file:///" + Paths.get(fileStorageProperties.getUploadDir()).toAbsolutePath().normalize().toString();
+        System.out.println("Resource path:--------------: " + resourcePath);
         WebMvcConfigurer.super.addResourceHandlers(registry);
         registry.addResourceHandler("/files/**")
-                .addResourceLocations("classpath:/static/");
+                .addResourceLocations(resourcePath);
     }
 
     @Override
