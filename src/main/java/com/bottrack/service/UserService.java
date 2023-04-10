@@ -158,6 +158,11 @@ public class UserService implements IUserService {
         return result;
     }
 
+    public User getUserByEmailService(String email) {
+        var user = this.userRepository.getUserByEmail(email);
+        return user;
+    }
+
     public Optional<User> getByUserIdService(long userId) {
         var result = this.userRepository.findById(userId);
         if(result != null) {
