@@ -58,6 +58,12 @@ public class UserController extends BaseController {
         return ResponseEntity.ok(ApiResponse.Ok(result));
     }
 
+    @GetMapping("/getUserByEmail/{email}")
+    public ResponseEntity<ApiResponse> getUserByEmail(@PathVariable ("email") String email){
+        var result = this.userService.getUserByEmailService(email);
+        return ResponseEntity.ok(ApiResponse.Ok(result));
+    }
+
     @DeleteMapping("/deleteByUserId/{userId}")
     public ResponseEntity<ApiResponse> deleteByUserId(@PathVariable ("userId") long userId){
         var result = this.userService.deleteByUserIdService(userId);

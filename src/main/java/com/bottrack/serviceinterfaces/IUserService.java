@@ -16,6 +16,8 @@ public interface IUserService {
     List<User> getAllUserService();
 
     Optional<User> getByUserIdService(long userId);
+
+    User getUserByEmailService(String email);
     String deleteByUserIdService(long userId);
     User getByUserMobileService(String mobile);
 }
