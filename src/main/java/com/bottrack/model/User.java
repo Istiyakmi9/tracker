@@ -12,7 +12,6 @@ import java.util.Date;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "UserId")
     Long userId;
 
@@ -67,6 +66,17 @@ public class User {
 
     @Transient
     String filePath;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Transient
+    String password;
 
     public String getFilePath() {
         return filePath;

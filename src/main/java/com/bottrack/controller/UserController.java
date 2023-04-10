@@ -40,6 +40,12 @@ public class UserController extends BaseController {
         return ResponseEntity.ok(ApiResponse.Ok(result));
     }
 
+    @PostMapping("/createUser")
+    public ResponseEntity<ApiResponse> createUser(@RequestBody User user) throws Exception {
+        var result = this.userService.createUserService(user);
+        return ResponseEntity.ok(ApiResponse.Ok(result));
+    }
+
     @GetMapping("/getAllUser")
     public ResponseEntity<ApiResponse> getAllUser(){
         var result = this.userService.getAllUserService();
