@@ -1,12 +1,15 @@
 package com.bottrack.filehandler;
 
+import com.bottrack.model.FileStorageProperties;
 import com.bottrack.repositorymodel.FileDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletContext;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,9 +21,11 @@ public class FileManager {
     private final Logger logger = LoggerFactory.getLogger(FileManager.class);
     private final String basePath;
 
-    public FileManager() throws IOException {
+    @Autowired
+    public FileManager(FileStorageProperties fileStorageProperties) throws IOException {
         logger.info("Getting static folder class path");
-        basePath = getClass().getClassLoader().getResource("static").getPath();
+        // basePath = getClass().getClassLoader().getResource("static").getPath();
+        basePath = Paths.get(fileStorageProperties.getUploadDir()).toAbsolutePath().normalize().toString();
         logger.info("Static folder class path: " + basePath);
     }
 
