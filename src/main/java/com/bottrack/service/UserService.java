@@ -160,6 +160,12 @@ public class UserService implements IUserService {
 
     public User getUserByEmailService(String email) {
         var user = this.userRepository.getUserByEmail(email);
+        if(user != null) {
+            var fileDetail = this.fileRepository.filterByName(user.getUserId(), "profile");
+            if(fileDetail != null) {
+                user.setFilePath(Paths.get(fileDetail.getFilePath(), fileDetail.getFileName() + "." + fileDetail.getExtension()).toString());
+            }
+        }
         return user;
     }
 
