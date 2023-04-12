@@ -30,40 +30,44 @@ public class FileManager {
     }
 
     public FileDetail uploadFile(MultipartFile file, long userId, String fileName, String existingFilePath) throws Exception {
-        FileDetail fileDetail = new FileDetail();
+        FileDetail fileDetail = null;
         String name = file.getOriginalFilename();
 
-        String ext = name.substring(name.lastIndexOf(".") + 1);
-        String nameOnly = name.substring(0, name.lastIndexOf("."));
-        String relativePath = Paths.get("user_" + String.valueOf(userId)).toString();
+        if (file != null && name != null && !name.isEmpty()) {
+            fileDetail = new FileDetail();
+            String ext = name.substring(name.lastIndexOf(".") + 1);
+            String nameOnly = name.substring(0, name.lastIndexOf("."));
+            String relativePath = Paths.get("user_" + String.valueOf(userId)).toString();
 
-        if(name.contains(".."))
-            throw new Exception("File name contain invalid character.");
+            if(name.contains(".."))
+                throw new Exception("File name contain invalid character.");
 
-        Path targetDirectory = Paths.get(basePath, relativePath)
-                .toAbsolutePath()
-                .normalize();
-        if(Files.notExists(targetDirectory))
-            Files.createDirectories(targetDirectory);
+            Path targetDirectory = Paths.get(basePath, relativePath)
+                    .toAbsolutePath()
+                    .normalize();
+            if(Files.notExists(targetDirectory))
+                Files.createDirectories(targetDirectory);
 
-        String newFileName = null;
-        if (fileName.isEmpty()) {
-            fileDetail.setFileName(nameOnly);
-            newFileName = nameOnly;
-        } else {
-            fileDetail.setFileName(fileName);
-            newFileName = fileName + "." + ext;
-        }
+            String newFileName = null;
+            if (fileName.isEmpty()) {
+                fileDetail.setFileName(nameOnly);
+                newFileName = nameOnly;
+            } else {
+                fileDetail.setFileName(fileName);
+                newFileName = fileName + "." + ext;
+            }
 
-        Path targetPath = targetDirectory.resolve(newFileName);
+            Path targetPath = targetDirectory.resolve(newFileName);
 
 //        if(Files.exists(existingFilePath))
 //            Files.delete(existingFilePath);
 
-        Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
 
-        fileDetail.setFilePath(relativePath);
-        fileDetail.setExtension(ext);
+            fileDetail.setFilePath(relativePath);
+            fileDetail.setExtension(ext);
+        }
+
         return fileDetail;
     }
 }

@@ -99,9 +99,11 @@ public class UserService implements IUserService {
         }
 
         FileDetail fileDetail = fileManager.uploadFile(file, user.getUserId(), "profile", user.getFilePath());
-        fileDetail.setUserId(userId);
-        fileService.updateFileDetailByName(fileDetail);
-        user.setFilePath(Paths.get(fileDetail.getFilePath(), fileDetail.getFileName() + "." + fileDetail.getExtension()).toString());
+        if(fileDetail != null) {
+            fileDetail.setUserId(userId);
+            fileService.updateFileDetailByName(fileDetail);
+            user.setFilePath(Paths.get(fileDetail.getFilePath(), fileDetail.getFileName() + "." + fileDetail.getExtension()).toString());
+        }
         return user;
     }
 
