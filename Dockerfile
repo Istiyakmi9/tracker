@@ -3,10 +3,10 @@ FROM maven:3.6.3-jdk-11-openj9 AS MAVEN
 MAINTAINER BOTTOMHALF
 
 COPY pom.xml /build/
-RUN mvn package
 COPY src /build/src/
 
 WORKDIR /build/
+RUN mvn package
 
 FROM openjdk:11
 WORKDIR /app
