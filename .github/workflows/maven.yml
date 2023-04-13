@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: BOTTOMHALF: Tracker CI/CD
+name: BOTTOMHALF - Tracker CI/CD
 
 on:
   push:
