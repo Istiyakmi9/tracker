@@ -79,7 +79,7 @@ public class UserService implements IUserService {
         user.setUpdatedBy(userId);
         user = userRepository.save(user);
         if(user == null)
-            throw new Exception("Invalid user id passed.");
+            throw new Exception("Fail to save user data. Please contact to admin.");
 
         Login login;
         Optional<Login> loginResult = Optional.ofNullable(this.loginRepository.getLoginByUserId(user.getUserId()));
