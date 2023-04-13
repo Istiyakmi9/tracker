@@ -5,9 +5,22 @@
 <hibernate-configuration>
     <session-factory>
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://192.168.0.101:3306/bottracker</property>
+
+        <!-- Local server database server detail -->
+<!--        <property name="connection.url">jdbc:mysql://192.168.0.101:3306/bottracker</property>-->
+<!--        <property name="connection.username">istiyak</property>-->
+<!--        <property name="connection.password">live@Bottomhalf_001</property>-->
+
+<!-- Local database server detail -->
+<!--                <property name="connection.url">jdbc:mysql://localhost:3306/bottracker</property>-->
+<!--                <property name="connection.username">root</property>-->
+<!--                <property name="connection.password">Istiyak@mi9</property>-->
+
+<!-- Live database server detail -->
+        <property name="connection.url">jdbc:mysql://194.233.76.48:3306/bottracker</property>
         <property name="connection.username">istiyak</property>
-        <property name="connection.password">live@Bottomhalf_001</property>
+        <property name="connection.password">live@Bottomhalf_011</property>
+
         <property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>
         <property name="show_sql">true</property>
 
