@@ -11,8 +11,14 @@ import java.util.Optional;
 
 public interface IVehicleDetailService {
 
-    public String addVehicleDetailService(VehicleDetail vehicleDetail);
-    public ResponseEntity<Object> updateVehicleDetailByVehicleNoService(VehicleDetail vehicleDetail, long vehicleNo) throws IOException;
+    public VehicleDetail addVehicleDetailService(VehicleDetail vehicleDetail, MultipartFile file) throws Exception;
+    public Optional<VehicleDetail> getVehicleByUserIdService(Long userId) throws Exception;
+    public VehicleDetail updateVehicleDetailService(VehicleDetail vehicleDetail, MultipartFile file, Long vehicleId) throws Exception;
+    public Optional<VehicleDetail> getVehicleByMobileService(String mobile) throws Exception;
+    public Optional<VehicleDetail> getVehicleByEmailService(String email) throws Exception;
+
+//    Old code
+    public ResponseEntity<Object> updateVehicleDetailByVehicleNoService(VehicleDetail vehicleDetail, String vehicleNo) throws IOException;
     public VehicleDetail createOrUpdateVehicleDetailService(VehicleDetail vehicleDetail,
                                                       long vehicleNo,
                                                       long userId,
@@ -21,6 +27,4 @@ public interface IVehicleDetailService {
     public List<VehicleDetail> getAllVehicleDetailService();
     public Optional<VehicleDetail> getVehicleDetailByVehicleNoService(long vehicleNo);
     public String deleteVehicleDetailByVehicleNoService(long vehicleNo);
-
-
 }

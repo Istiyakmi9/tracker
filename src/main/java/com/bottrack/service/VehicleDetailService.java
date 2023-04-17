@@ -1,14 +1,20 @@
 package com.bottrack.service;
 
+import com.bottrack.filehandler.FileManager;
+import com.bottrack.model.User;
 import com.bottrack.model.VehicleDetail;
+import com.bottrack.repository.UserRepository;
 import com.bottrack.repository.VehicleDetailRepository;
+import com.bottrack.repositorymodel.FileDetail;
 import com.bottrack.serviceinterfaces.IVehicleDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,23 +23,124 @@ public class VehicleDetailService implements IVehicleDetailService {
 
     @Autowired
     VehicleDetailRepository vehicleDetailRepository;
+    @Autowired
+    FileManager fileManager;
+    @Autowired
+    FileService fileService;
+    @Autowired
+    UserRepository userRepository;
 
+    @Transactional(rollbackFor = Exception.class)
+    public VehicleDetail addVehicleDetailService(VehicleDetail vehicleDetail, MultipartFile file) throws Exception {
+        if (vehicleDetail.getVehicleId() != 0)
+            throw new Exception("VehicleId already exist");
 
-    public String addVehicleDetailService(VehicleDetail vehicleDetail) {
+        if (vehicleDetail.getUserId() <= 0)
+            throw new Exception("Invalid userid. Please login again");
+
         java.util.Date utilDate = new java.util.Date();
         var date = new java.sql.Timestamp(utilDate.getTime());
+        Optional<VehicleDetail> lastVehicle = Optional.ofNullable(this.vehicleDetailRepository.getLastVehicle());
+        if (lastVehicle.isEmpty())
+            vehicleDetail.setVehicleId(1L);
+        else
+            vehicleDetail.setVehicleId(lastVehicle.get().getVehicleId()+1);
+
         vehicleDetail.setCreatedOn(date);
+        vehicleDetail.setCreatedBy(vehicleDetail.getUserId());
         var result = this.vehicleDetailRepository.save(vehicleDetail);
-        return "New VehicleDetail has been added";
+        if (result == null)
+            throw new Exception("Fail to insert vehicle detail. Please contact to admin");
+
+        if (!file.isEmpty()) {
+            FileDetail fileDetail = fileManager.uploadFile(file,result.getVehicleId(), "vehicle", null);
+            if (fileDetail != null) {
+                fileDetail.setUserId(result.getVehicleId());
+                fileService.updateFileDetailByName(fileDetail);
+                result.setFilePath(Paths.get(fileDetail.getFilePath(), fileDetail.getFileName()+ "."+ fileDetail.getExtension()).toString());
+            }
+        }
+        return result;
     }
 
-    public ResponseEntity<Object> updateVehicleDetailByVehicleNoService(VehicleDetail vehicleDetail, long vehicleNo) throws IOException {
+    @Transactional(rollbackFor = Exception.class)
+    public VehicleDetail updateVehicleDetailService(VehicleDetail vehicleDetail, MultipartFile file, Long vehicleId) throws Exception {
+        if (vehicleId <= 0)
+            throw new Exception("VehicleId already exist");
+
+        if (vehicleDetail.getUserId() <= 0)
+            throw new Exception("Invalid userid. Please login again");
+
+        java.util.Date utilDate = new java.util.Date();
+        var date = new java.sql.Timestamp(utilDate.getTime());
+        Optional<VehicleDetail> existVehicle = this.vehicleDetailRepository.findById(vehicleId);
+        if (existVehicle.isEmpty())
+            throw new Exception("Vechile detail not found");
+
+        VehicleDetail vehicle = existVehicle.get();
+        vehicle.setVehicleNo(vehicleDetail.getVehicleNo());
+        vehicle.setMake(vehicleDetail.getMake());
+        vehicle.setModel(vehicleDetail.getModel());
+        vehicle.setVarient(vehicleDetail.getVarient());
+        vehicle.setVehicleType(vehicleDetail.getVehicleType());
+        vehicle.setSeries(vehicleDetail.getSeries());
+        vehicleDetail.setUpdatedOn(date);
+        vehicleDetail.setUpdatedBy(vehicleDetail.getUserId());
+        var result = this.vehicleDetailRepository.save(vehicleDetail);
+        if (result == null)
+            throw new Exception("Fail to insert vehicle detail. Please contact to admin");
+
+        if (!file.isEmpty()) {
+            FileDetail fileDetail = fileManager.uploadFile(file,result.getVehicleId(), "vehicle", null);
+            if (fileDetail != null) {
+                fileDetail.setUserId(result.getVehicleId());
+                fileService.updateFileDetailByName(fileDetail);
+                result.setFilePath(Paths.get(fileDetail.getFilePath(), fileDetail.getFileName()+ "."+ fileDetail.getExtension()).toString());
+            }
+        }
+        return result;
+    }
+
+    public Optional<VehicleDetail> getVehicleByUserIdService(Long userId) throws Exception {
+        if (userId <= 0)
+            throw new Exception("Invalid user selected. Please login again");
+
+        var result = this.vehicleDetailRepository.findById(userId);
+        return result;
+    }
+
+    public Optional<VehicleDetail> getVehicleByEmailService(String email) throws Exception {
+        if (email == null || email.isEmpty())
+            throw new Exception("Invalid user selected. Please login again");
+
+        User user = this.userRepository.getUserByEmail(email);
+        if (user == null)
+            throw new Exception("Invalid email id. Please enter a valid email");
+
+        var result = this.vehicleDetailRepository.findById(user.getUserId());
+        return result;
+    }
+
+    public Optional<VehicleDetail> getVehicleByMobileService(String mobile) throws Exception {
+        if (mobile == null || mobile.isEmpty())
+            throw new Exception("Invalid user selected. Please login again");
+
+        User user = this.userRepository.getByUserMobile(mobile);
+        if (user == null)
+            throw new Exception("Invalid mobile. Please enter a valid mobile number");
+
+        var result = this.vehicleDetailRepository.findById(user.getUserId());
+        return result;
+    }
+
+//Old Code----------------------------------------------
+    public ResponseEntity<Object> updateVehicleDetailByVehicleNoService(VehicleDetail vehicleDetail, String vehicleNo) throws IOException {
         java.util.Date utilDate = new java.util.Date();
         var date = new java.sql.Timestamp(utilDate.getTime());
         vehicleDetail.setCreatedOn(date);
-        Optional<VehicleDetail> result = this.vehicleDetailRepository.findById(vehicleNo);
-        if (result.isEmpty())
-            return ResponseEntity.notFound().build();
+//        Optional<VehicleDetail> result = this.vehicleDetailRepository.findById(vehicleNo);
+//        if (result.isEmpty())
+//            return ResponseEntity.notFound().build();
 
         vehicleDetail.setVehicleNo(vehicleNo);
         vehicleDetailRepository.save(vehicleDetail);
