@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -91,7 +92,7 @@ public class VehicleDetailService implements IVehicleDetailService {
             throw new Exception("Fail to insert vehicle detail. Please contact to admin");
 
         if (!file.isEmpty()) {
-            FileDetail fileDetail = fileManager.uploadFile(file,result.getVehicleId(), "vehicle", null);
+            FileDetail fileDetail = fileManager.uploadFile(file,result.getVehicleId(), "vehicle" + new Date().getTime(), null);
             if (fileDetail != null) {
                 fileDetail.setUserId(result.getVehicleId());
                 fileService.updateFileDetailByName(fileDetail);
