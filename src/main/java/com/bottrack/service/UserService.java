@@ -98,7 +98,7 @@ public class UserService implements IUserService {
             throw new Exception("Fail to update login detail record. Please contact to admin.");
         }
 
-        FileDetail fileDetail = fileManager.uploadFile(file, user.getUserId(), "profile", user.getFilePath());
+        FileDetail fileDetail = fileManager.uploadFile(file, user.getUserId(), "profile" + new Date().getTime(), user.getFilePath());
         if(fileDetail != null) {
             fileDetail.setUserId(userId);
             fileService.updateFileDetailByName(fileDetail);
