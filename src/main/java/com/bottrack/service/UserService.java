@@ -185,7 +185,7 @@ public class UserService implements IUserService {
     public User getUserByEmailService(String email) {
         var user = this.userRepository.getUserByEmail(email);
         if(user != null) {
-            var fileDetail = this.fileRepository.filterByName(user.getUserId(), "profile");
+            var fileDetail = this.fileRepository.filterByName(user.getUserId(), "user%");
             if(fileDetail != null) {
                 user.setFilePath(Paths.get(fileDetail.getFilePath(), fileDetail.getFileName() + "." + fileDetail.getExtension()).toString());
             }
@@ -196,7 +196,7 @@ public class UserService implements IUserService {
     public Optional<User> getByUserIdService(long userId) {
         var result = this.userRepository.findById(userId);
         if(result != null) {
-            var fileDetail = this.fileRepository.filterByName(result.get().getUserId(), "profile");
+            var fileDetail = this.fileRepository.filterByName(result.get().getUserId(), "user%");
             if(fileDetail != null) {
                 result.get().setFilePath(Paths.get(fileDetail.getFilePath(), fileDetail.getFileName() + "." + fileDetail.getExtension()).toString());
             }
@@ -207,7 +207,7 @@ public class UserService implements IUserService {
     public User getByUserMobileService(String mobile) {
         var result = this.userRepository.getByUserMobile(mobile);
         if(result != null) {
-            var fileDetail = this.fileRepository.filterByName(result.getUserId(), "profile");
+            var fileDetail = this.fileRepository.filterByName(result.getUserId(), "user%");
             if(fileDetail != null) {
                 result.setFilePath(fileDetail.getFilePath());
             }
