@@ -53,14 +53,7 @@ public class VehicleDetailService implements IVehicleDetailService {
         if (result == null)
             throw new Exception("Fail to insert vehicle detail. Please contact to admin");
 
-        if (!file.isEmpty()) {
-            FileDetail fileDetail = fileManager.uploadFile(file,result.getVehicleId(), "vehicle", null);
-            if (fileDetail != null) {
-                fileDetail.setUserId(result.getVehicleId());
-                fileService.updateFileDetailByName(fileDetail);
-                result.setFilePath(Paths.get(fileDetail.getFilePath(), fileDetail.getFileName()+ "."+ fileDetail.getExtension()).toString());
-            }
-        }
+        saveUpdateFileDetail(result, file);
         return result;
     }
 
@@ -91,15 +84,34 @@ public class VehicleDetailService implements IVehicleDetailService {
         if (result == null)
             throw new Exception("Fail to insert vehicle detail. Please contact to admin");
 
+        saveUpdateFileDetail(result, file);
+        return result;
+    }
+
+    private void saveUpdateFileDetail(VehicleDetail result, MultipartFile file) throws Exception {
         if (!file.isEmpty()) {
-            FileDetail fileDetail = fileManager.uploadFile(file,result.getVehicleId(), "vehicle" + new Date().getTime(), null);
+            String oldFilePath = "";
+            FileDetail existingFileDetail = fileService.getVehicleFileDetail(result.getUserId());
+            if (existingFileDetail != null) {
+                oldFilePath = existingFileDetail.getFileName() + "." + existingFileDetail.getExtension();
+            }
+
+            FileDetail fileDetail = fileManager.uploadFile(file, result.getVehicleId(), "vehicle_" + new Date().getTime(), oldFilePath);
             if (fileDetail != null) {
-                fileDetail.setUserId(result.getVehicleId());
-                fileService.updateFileDetailByName(fileDetail);
-                result.setFilePath(Paths.get(fileDetail.getFilePath(), fileDetail.getFileName()+ "."+ fileDetail.getExtension()).toString());
+                if (existingFileDetail != null) {
+                    existingFileDetail.setFileSize((fileDetail.getFileSize()));
+                    existingFileDetail.setFileName((fileDetail.getFileName()));
+                    existingFileDetail.setFilePath((fileDetail.getFilePath()));
+                    existingFileDetail.setExtension((fileDetail.getExtension()));
+                } else {
+                    existingFileDetail = fileDetail;
+                }
+
+                existingFileDetail.setUserId((result.getVehicleId()));
+                fileService.addOrUpdateFileDetail(existingFileDetail);
+                result.setFilePath(Paths.get(existingFileDetail.getFilePath(), existingFileDetail.getFileName()+ "."+ existingFileDetail.getExtension()).toString());
             }
         }
-        return result;
     }
 
     public Optional<VehicleDetail> getVehicleByUserIdService(Long userId) throws Exception {
