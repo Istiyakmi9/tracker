@@ -13,6 +13,9 @@ public class VehicleDetail {
     @Column(name = "VehicleNo")
     String vehicleNo;
 
+    @Column(name = "BrandName")
+    String brandName;
+
     @Column(name = "Make")
     String make;
 
@@ -52,6 +55,7 @@ public class VehicleDetail {
         return "VehicleDetail{" +
                 "vehicleId=" + vehicleId +
                 ", vehicleNo='" + vehicleNo + '\'' +
+                ", brandName='" + brandName + '\'' +
                 ", make='" + make + '\'' +
                 ", model='" + model + '\'' +
                 ", varient='" + varient + '\'' +
@@ -70,9 +74,10 @@ public class VehicleDetail {
     public VehicleDetail() {
     }
 
-    public VehicleDetail(long vehicleId, String vehicleNo, String make, String model, String varient, String vehicleType, String series, long userId, String filePath, long adminId, Long createdBy, Long updatedBy, Date createdOn, Date updatedOn) {
+    public VehicleDetail(long vehicleId, String vehicleNo, String brandName, String make, String model, String varient, String vehicleType, String series, long userId, String filePath, long adminId, Long createdBy, Long updatedBy, Date createdOn, Date updatedOn) {
         this.vehicleId = vehicleId;
         this.vehicleNo = vehicleNo;
+        this.brandName = brandName;
         this.make = make;
         this.model = model;
         this.varient = varient;
@@ -85,6 +90,18 @@ public class VehicleDetail {
         this.updatedBy = updatedBy;
         this.createdOn = createdOn;
         this.updatedOn = updatedOn;
+    }
+
+    public void setVehicleId(Long vehicleId) {
+        this.vehicleId = vehicleId;
+    }
+
+    public String getBrandName() {
+        return brandName;
+    }
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
     }
 
     public long getVehicleId() {

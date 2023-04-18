@@ -59,8 +59,9 @@ public class VehicleDetailService implements IVehicleDetailService {
 
     @Transactional(rollbackFor = Exception.class)
     public VehicleDetail updateVehicleDetailService(VehicleDetail vehicleDetail, MultipartFile file, Long vehicleId) throws Exception {
-        if (vehicleId <= 0)
-            throw new Exception("VehicleId already exist");
+        if (vehicleId <= 0) {
+            return addVehicleDetailService(vehicleDetail, file);
+        }
 
         if (vehicleDetail.getUserId() <= 0)
             throw new Exception("Invalid userid. Please login again");
@@ -119,6 +120,12 @@ public class VehicleDetailService implements IVehicleDetailService {
             throw new Exception("Invalid user selected. Please login again");
 
         var result = this.vehicleDetailRepository.findById(userId);
+        if(result.isPresent()) {
+            var fileDetail = this.fileService.getVehicleFileDetail(result.get().getUserId());
+            if(fileDetail != null) {
+                result.get().setFilePath(Paths.get(fileDetail.getFilePath(), fileDetail.getFileName()+ "."+ fileDetail.getExtension()).toString());
+            }
+        }
         return result;
     }
 
