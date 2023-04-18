@@ -59,8 +59,11 @@ public class FileManager {
 
             Path targetPath = targetDirectory.resolve(newFileName);
 
-//        if(Files.exists(existingFilePath))
-//            Files.delete(existingFilePath);
+            if (!existingFilePath.isEmpty()) {
+                var existingFile = targetDirectory.resolve(existingFilePath);
+                if(Files.exists(existingFile))
+                    Files.delete(existingFile);
+            }
 
             Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
 

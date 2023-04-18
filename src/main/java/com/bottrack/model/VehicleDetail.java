@@ -7,7 +7,6 @@ import java.util.Date;
 @Entity
 @Table(name = "vehicledetail")
 public class VehicleDetail {
-
     @Id
     @Column(name="VehicleId")
     Long vehicleId;

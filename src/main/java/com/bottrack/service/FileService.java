@@ -5,6 +5,9 @@ import com.bottrack.repository.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.util.Optional;
+
 @Service
 public class FileService {
     FileRepository fileRepository;
@@ -31,5 +34,49 @@ public class FileService {
 
         var result = this.fileRepository.save(record);
         return result;
+    }
+
+    public FileDetail addOrUpdateFileDetail(FileDetail fileDetail) {
+        FileDetail finalRecord;
+        var record = this.fileRepository.findById(fileDetail.getFileDetailId());
+        if (record.isEmpty()){
+            long len = this.fileRepository.count();
+            finalRecord = fileDetail;
+            finalRecord.setFileDetailId((int)len + 1);
+        } else {
+            finalRecord = record.get();
+            finalRecord.setFilePath(fileDetail.getFilePath());
+            finalRecord.setFileSize(fileDetail.getFileSize());
+            finalRecord.setExtension(fileDetail.getExtension());
+        }
+
+        return this.fileRepository.save(finalRecord);
+    }
+
+    public FileDetail getVehicleFileDetail(long userId) {
+        return this.fileRepository.filterByName(userId, "vehicle%");
+    }
+
+    public FileDetail getVehicleFileDetailById(int fileDetailId) {
+        var fileDetail = this.fileRepository.findById(fileDetailId);
+        return fileDetail.orElse(null);
+    }
+
+    public void deleteVehicleFileDetail(long userId) {
+        var fileDetail = getVehicleFileDetail(userId);
+        if(fileDetail != null) {
+            this.fileRepository.delete(fileDetail);
+        }
+    }
+
+    public FileDetail getUserFileDetail(long userId) {
+        return this.fileRepository.filterByName(userId, "user%");
+    }
+
+    public void deleteUserFileDetail(long userId) {
+        var fileDetail = getUserFileDetail(userId);
+        if(fileDetail != null) {
+            this.fileRepository.delete(fileDetail);
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.bottrack.service;
 import antlr.Utils;
 import com.bottrack.filehandler.FileManager;
 import com.bottrack.model.Login;
+import com.bottrack.model.VehicleDetail;
 import com.bottrack.repository.FileRepository;
 import com.bottrack.repository.LoginRepository;
 import com.bottrack.repositorymodel.FileDetail;
@@ -98,13 +99,34 @@ public class UserService implements IUserService {
             throw new Exception("Fail to update login detail record. Please contact to admin.");
         }
 
-        FileDetail fileDetail = fileManager.uploadFile(file, user.getUserId(), "profile" + new Date().getTime(), user.getFilePath());
-        if(fileDetail != null) {
-            fileDetail.setUserId(userId);
-            fileService.updateFileDetailByName(fileDetail);
-            user.setFilePath(Paths.get(fileDetail.getFilePath(), fileDetail.getFileName() + "." + fileDetail.getExtension()).toString());
-        }
+        saveUpdateFileDetail(user, file);
         return user;
+    }
+
+    private void saveUpdateFileDetail(User result, MultipartFile file) throws Exception {
+        if (!file.isEmpty()) {
+            String oldFilePath = "";
+            FileDetail existingFileDetail = fileService.getUserFileDetail(result.getUserId());
+            if (existingFileDetail != null) {
+                oldFilePath = existingFileDetail.getFileName() + "." + existingFileDetail.getExtension();
+            }
+
+            FileDetail fileDetail = fileManager.uploadFile(file, result.getUserId(), "user_" + new Date().getTime(), oldFilePath);
+            if (fileDetail != null) {
+                if (existingFileDetail != null) {
+                    existingFileDetail.setFileSize((fileDetail.getFileSize()));
+                    existingFileDetail.setFileName((fileDetail.getFileName()));
+                    existingFileDetail.setFilePath((fileDetail.getFilePath()));
+                    existingFileDetail.setExtension((fileDetail.getExtension()));
+                } else {
+                    existingFileDetail = fileDetail;
+                }
+
+                existingFileDetail.setUserId((result.getUserId()));
+                fileService.addOrUpdateFileDetail(existingFileDetail);
+                result.setFilePath(Paths.get(existingFileDetail.getFilePath(), existingFileDetail.getFileName()+ "."+ existingFileDetail.getExtension()).toString());
+            }
+        }
     }
 
     @Transactional(rollbackFor = Exception.class)
