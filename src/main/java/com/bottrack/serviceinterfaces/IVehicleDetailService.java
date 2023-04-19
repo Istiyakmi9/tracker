@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface IVehicleDetailService {
 
     public VehicleDetail addVehicleDetailService(VehicleDetail vehicleDetail, MultipartFile file) throws Exception;
-    public Optional<VehicleDetail> getVehicleByUserIdService(Long userId) throws Exception;
+    public VehicleDetail getVehicleByUserIdService(Long userId) throws Exception;
     public VehicleDetail updateVehicleDetailService(VehicleDetail vehicleDetail, MultipartFile file, Long vehicleId) throws Exception;
     public Optional<VehicleDetail> getVehicleByMobileService(String mobile) throws Exception;
     public Optional<VehicleDetail> getVehicleByEmailService(String email) throws Exception;

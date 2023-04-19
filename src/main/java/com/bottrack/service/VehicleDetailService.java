@@ -115,17 +115,18 @@ public class VehicleDetailService implements IVehicleDetailService {
         }
     }
 
-    public Optional<VehicleDetail> getVehicleByUserIdService(Long userId) throws Exception {
+    public VehicleDetail getVehicleByUserIdService(Long userId) throws Exception {
         if (userId <= 0)
             throw new Exception("Invalid user selected. Please login again");
 
-        var result = this.vehicleDetailRepository.findById(userId);
-        if(result.isPresent()) {
-            var fileDetail = this.fileService.getVehicleFileDetail(result.get().getUserId());
+        var result = this.vehicleDetailRepository.findByUserId(userId);
+        if(result != null) {
+            var fileDetail = this.fileService.getVehicleFileDetail(result.getUserId());
             if(fileDetail != null) {
-                result.get().setFilePath(Paths.get(fileDetail.getFilePath(), fileDetail.getFileName()+ "."+ fileDetail.getExtension()).toString());
+                result.setFilePath(Paths.get(fileDetail.getFilePath(), fileDetail.getFileName()+ "."+ fileDetail.getExtension()).toString());
             }
         }
+
         return result;
     }
 
