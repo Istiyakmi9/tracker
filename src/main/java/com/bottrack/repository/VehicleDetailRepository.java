@@ -15,4 +15,5 @@ public interface VehicleDetailRepository extends JpaRepository<VehicleDetail, Lo
     @Query(nativeQuery = true, value = "select v.* from vehicledetail v order by v.VehicleId desc limit 1")
     VehicleDetail getLastVehicle();
 
+    VehicleDetail findByUserId(long userId);
 }
