@@ -1,5 +1,6 @@
 package com.bottrack.service;
 
+import com.bottrack.model.ApiResponse;
 import com.bottrack.model.VisitHistoryModel;
 import com.bottrack.repository.VisitHistoryRepository;
 import com.bottrack.serviceinterfaces.IVisitHistoryService;
