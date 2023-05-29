@@ -123,7 +123,7 @@ public class UserService implements IUserService {
                 }
 
                 existingFileDetail.setUserId((result.getUserId()));
-                fileService.addOrUpdateFileDetail(existingFileDetail);
+                fileService.addOrUpdateFileDetail(existingFileDetail, "user%");
                 result.setFilePath(Paths.get(existingFileDetail.getFilePath(), existingFileDetail.getFileName()+ "."+ existingFileDetail.getExtension()).toString());
             }
         }

@@ -109,7 +109,7 @@ public class VehicleDetailService implements IVehicleDetailService {
                 }
 
                 existingFileDetail.setUserId((result.getUserId()));
-                fileService.addOrUpdateFileDetail(existingFileDetail);
+                fileService.addOrUpdateFileDetail(existingFileDetail, "vehicle%");
                 result.setFilePath(Paths.get(existingFileDetail.getFilePath(), existingFileDetail.getFileName()+ "."+ existingFileDetail.getExtension()).toString());
             }
         }

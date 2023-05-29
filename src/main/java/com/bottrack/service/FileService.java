@@ -36,15 +36,15 @@ public class FileService {
         return result;
     }
 
-    public FileDetail addOrUpdateFileDetail(FileDetail fileDetail) {
+    public FileDetail addOrUpdateFileDetail(FileDetail fileDetail, String fileName) {
         FileDetail finalRecord;
-        var record = this.fileRepository.findById(fileDetail.getFileDetailId());
-        if (record.isEmpty()){
+        var record = this.fileRepository.filterByName(fileDetail.getUserId(), fileName);
+        if (record == null){
             long len = this.fileRepository.count();
             finalRecord = fileDetail;
             finalRecord.setFileDetailId((int)len + 1);
         } else {
-            finalRecord = record.get();
+            finalRecord = record;
             finalRecord.setFilePath(fileDetail.getFilePath());
             finalRecord.setFileSize(fileDetail.getFileSize());
             finalRecord.setExtension(fileDetail.getExtension());
