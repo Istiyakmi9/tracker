@@ -75,10 +75,15 @@ public class RatingHistoryService implements IRatingHistoryService {
 
         var result = this.ratingHistoryRepository.findByUserId(userId);
         if(result != null) {
-            var fileDetail = this.fileService.getRatingFileDetail(result.getUserId());
-            if(fileDetail != null) {
-                result.setFilePath(Paths.get(fileDetail.getFilePath(), fileDetail.getFileName()+ "."+ fileDetail.getExtension()).toString());
+            try {
+                var fileDetail = this.fileService.getRatingFileDetail(result.getUserId());
+                if(fileDetail != null) {
+                    result.setFilePath(Paths.get(fileDetail.getFilePath(), fileDetail.getFileName()+ "."+ fileDetail.getExtension()).toString());
+                }
+            } catch (Exception e) {
+                throw e;
             }
+
         }
 
         return result;
@@ -104,7 +109,7 @@ public class RatingHistoryService implements IRatingHistoryService {
                 }
 
                 existingFileDetail.setUserId((result.getUserId()));
-                var uploadedFile = fileService.addOrUpdateFileDetail(existingFileDetail);
+                var uploadedFile = fileService.addOrUpdateFileDetail(existingFileDetail, "rating%");
                 result.setFilePath(Paths.get(existingFileDetail.getFilePath(), existingFileDetail.getFileName()+ "."+ existingFileDetail.getExtension()).toString());
                 result.setFileId(uploadedFile.getFileDetailId());
             }
