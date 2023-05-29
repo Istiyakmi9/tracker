@@ -57,6 +57,10 @@ public class FileService {
         return this.fileRepository.filterByName(userId, "vehicle%");
     }
 
+    public FileDetail getRatingFileDetail(long userId) {
+        return this.fileRepository.filterByName(userId, "rating%");
+    }
+
     public FileDetail getVehicleFileDetailById(int fileDetailId) {
         var fileDetail = this.fileRepository.findById(fileDetailId);
         return fileDetail.orElse(null);
