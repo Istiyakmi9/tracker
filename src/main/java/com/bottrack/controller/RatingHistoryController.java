@@ -17,10 +17,8 @@ public class RatingHistoryController extends BaseController{
     @Autowired
     IRatingHistoryService iRatingHistoryService;
     @PostMapping("/addRatingDetail")
-    public ResponseEntity<ApiResponse> addRatingDetail(@RequestParam("ratingHistoryDetail") String ratingHistoryDetail,
-                                                        @RequestParam("file") MultipartFile file) throws Exception {
-        RatingHistory rating = objectMapper.readValue(ratingHistoryDetail, RatingHistory.class);
-        var result = this.iRatingHistoryService.addRatingDetailService(rating, file);
+    public ResponseEntity<ApiResponse> addRatingDetail(@RequestBody RatingHistory ratingHistory) throws Exception {
+        var result = this.iRatingHistoryService.addRatingDetailService(ratingHistory);
         return ResponseEntity.ok(ApiResponse.Ok(result));
     }
 
@@ -30,7 +28,7 @@ public class RatingHistoryController extends BaseController{
                                                            @PathVariable("ratingHistoryId") long ratingHistoryId) throws Exception {
 
         RatingHistory rating = objectMapper.readValue(ratingHistory, RatingHistory.class);
-        var result = this.iRatingHistoryService.updateRatingDetailService(rating, file, ratingHistoryId);
+        var result = this.iRatingHistoryService.updateRatingDetailService(rating, ratingHistoryId);
         return ResponseEntity.ok(ApiResponse.Ok(result));
     }
 

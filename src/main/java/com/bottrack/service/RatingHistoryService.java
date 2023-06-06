@@ -24,7 +24,7 @@ public class RatingHistoryService implements IRatingHistoryService {
 
     @Transactional(rollbackFor = Exception.class)
 
-    public String addRatingDetailService(RatingHistory rating, MultipartFile file) throws Exception {
+    public String addRatingDetailService(RatingHistory rating) throws Exception {
         if (rating.getUserId() == 0)
             throw new Exception("Invalid userid. Please login again");
 
@@ -37,13 +37,12 @@ public class RatingHistoryService implements IRatingHistoryService {
             rating.setRatingHistoryId(ratingDetail.get().getRatingHistoryId() + 1);
 
         rating.setFeedbackOn(date);
-        saveUpdateFileDetail(rating, file);
         this.ratingHistoryRepository.save(rating);
         return "inserted";
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public RatingHistory updateRatingDetailService(RatingHistory ratingHistory, MultipartFile file, Long RatingHistoryId) throws Exception {
+    public RatingHistory updateRatingDetailService(RatingHistory ratingHistory, Long RatingHistoryId) throws Exception {
         if (RatingHistoryId == 0)
             throw new Exception("Invalid rating history id");
 
@@ -63,7 +62,6 @@ public class RatingHistoryService implements IRatingHistoryService {
         rating.setFeedbackOn(date);
         rating.setLatitude(ratingHistory.getLatitude());
         rating.setLongitude(ratingHistory.getLongitude());
-        saveUpdateFileDetail(rating, file);
         this.ratingHistoryRepository.save(rating);
         return rating;
     }
