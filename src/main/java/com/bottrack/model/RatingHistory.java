@@ -1,5 +1,7 @@
 package com.bottrack.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -20,6 +22,7 @@ public class RatingHistory {
     @Column( name = "VisitingAddress")
     String visitingAddress;
     @Column( name = "FeedbackOn")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     Date feedbackOn;
     @Column( name = "Latitude")
     String latitude;

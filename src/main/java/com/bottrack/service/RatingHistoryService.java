@@ -11,8 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Paths;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class RatingHistoryService implements IRatingHistoryService {
@@ -25,7 +24,7 @@ public class RatingHistoryService implements IRatingHistoryService {
 
     @Transactional(rollbackFor = Exception.class)
 
-    public String addRatingDetailService(RatingHistory rating, MultipartFile file) throws Exception {
+    public String addRatingDetailService(RatingHistory rating) throws Exception {
         if (rating.getUserId() == 0)
             throw new Exception("Invalid userid. Please login again");
 
@@ -35,16 +34,15 @@ public class RatingHistoryService implements IRatingHistoryService {
         if (ratingDetail.isEmpty())
             rating.setRatingHistoryId(1L);
         else
-            rating.setRatingHistoryId(ratingDetail.get().getRatingHistoryId()+1);
+            rating.setRatingHistoryId(ratingDetail.get().getRatingHistoryId() + 1);
 
         rating.setFeedbackOn(date);
-        saveUpdateFileDetail(rating, file);
         this.ratingHistoryRepository.save(rating);
         return "inserted";
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public RatingHistory updateRatingDetailService(RatingHistory ratingHistory, MultipartFile file, Long RatingHistoryId) throws Exception {
+    public RatingHistory updateRatingDetailService(RatingHistory ratingHistory, Long RatingHistoryId) throws Exception {
         if (RatingHistoryId == 0)
             throw new Exception("Invalid rating history id");
 
@@ -64,29 +62,23 @@ public class RatingHistoryService implements IRatingHistoryService {
         rating.setFeedbackOn(date);
         rating.setLatitude(ratingHistory.getLatitude());
         rating.setLongitude(ratingHistory.getLongitude());
-        saveUpdateFileDetail(rating, file);
         this.ratingHistoryRepository.save(rating);
         return rating;
     }
 
-    public RatingHistory getHistoryRatingByUserIdService(Long userId) throws Exception {
+    public List<RatingHistory> getHistoryRatingByUserIdService(Long userId) throws Exception {
         if (userId <= 0)
             throw new Exception("Invalid user selected. Please login again");
 
-        var result = this.ratingHistoryRepository.findByUserId(userId);
-        if(result != null) {
-            try {
-                var fileDetail = this.fileService.getRatingFileDetail(result.getUserId());
-                if(fileDetail != null) {
-                    result.setFilePath(Paths.get(fileDetail.getFilePath(), fileDetail.getFileName()+ "."+ fileDetail.getExtension()).toString());
-                }
-            } catch (Exception e) {
-                throw e;
-            }
+        List<RatingHistory> ratingHistories = new ArrayList<>();
 
+        try {
+            ratingHistories = this.ratingHistoryRepository.findByUserId(userId);
+        } catch (Exception e) {
+            throw e;
         }
 
-        return result;
+        return ratingHistories;
     }
 
     private void saveUpdateFileDetail(RatingHistory result, MultipartFile file) throws Exception {
@@ -110,7 +102,7 @@ public class RatingHistoryService implements IRatingHistoryService {
 
                 existingFileDetail.setUserId((result.getUserId()));
                 var uploadedFile = fileService.addOrUpdateFileDetail(existingFileDetail, "rating%");
-                result.setFilePath(Paths.get(existingFileDetail.getFilePath(), existingFileDetail.getFileName()+ "."+ existingFileDetail.getExtension()).toString());
+                result.setFilePath(Paths.get(existingFileDetail.getFilePath(), existingFileDetail.getFileName() + "." + existingFileDetail.getExtension()).toString());
                 result.setFileId(uploadedFile.getFileDetailId());
             }
         }
