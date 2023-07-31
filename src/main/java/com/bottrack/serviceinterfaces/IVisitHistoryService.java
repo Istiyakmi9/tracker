@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface IVisitHistoryService {
     List<VisitHistoryModel> getMonthVisitedMapHistory(FilterModel filterModel);
+    List<VisitHistoryModel> getMonthVisitedMapHistory(long userId);
 }

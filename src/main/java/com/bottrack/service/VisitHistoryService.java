@@ -25,6 +25,11 @@ public class VisitHistoryService implements IVisitHistoryService {
     @Autowired
     LowLevelExecution lowLevelExecution;
 
+    public List<VisitHistoryModel> getMonthVisitedMapHistory(long userId) {
+        var result = visitHistoryRepository.lastMonthHistory(userId);
+        return  result;
+    }
+
     public List<VisitHistoryModel> getMonthVisitedMapHistory(FilterModel filter) {
         List<DbParameters> dbParameters = new ArrayList<>();
         dbParameters.add(new DbParameters("_searchString", filter.getSearchString(), Types.VARCHAR));
