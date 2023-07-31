@@ -66,25 +66,8 @@ public class User {
 
     @Transient
     String filePath;
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     @Transient
     String password;
-
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
-    }
 
     public Long getUserId() {
         return userId;
@@ -114,7 +97,9 @@ public class User {
         return dob;
     }
 
-    public void setDob(Date dob) { this.dob = dob; }
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
 
     public String getMobile() {
         return mobile;
@@ -212,26 +197,20 @@ public class User {
         this.updatedOn = updatedOn;
     }
 
-    public User(Long userId, String firstName, String lastName, Date dob, String mobile, String email, String firstAddress, String secondAddress, String state, String city, String country, long adminId, Long createdBy, Long updatedBy, Date createdOn, Date updatedOn) {
-        this.userId = userId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dob = dob;
-        this.mobile = mobile;
-        this.email = email;
-        this.firstAddress = firstAddress;
-        this.secondAddress = secondAddress;
-        this.state = state;
-        this.city = city;
-        this.country = country;
-        this.adminId = adminId;
-        this.createdBy = createdBy;
-        this.updatedBy = updatedBy;
-        this.createdOn = createdOn;
-        this.updatedOn = updatedOn;
+    public String getFilePath() {
+        return filePath;
     }
 
-    public User() {
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
@@ -253,6 +232,31 @@ public class User {
                 ", updatedBy=" + updatedBy +
                 ", createdOn=" + createdOn +
                 ", updatedOn=" + updatedOn +
+                ", filePath='" + filePath + '\'' +
+                ", password='" + password + '\'' +
                 '}';
+    }
+
+    public User() {}
+
+    public User(Long userId, String firstName, String lastName, Date dob, String mobile, String email, String firstAddress, String secondAddress, String state, String city, String country, long adminId, Long createdBy, Long updatedBy, Date createdOn, Date updatedOn, String filePath, String password) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dob = dob;
+        this.mobile = mobile;
+        this.email = email;
+        this.firstAddress = firstAddress;
+        this.secondAddress = secondAddress;
+        this.state = state;
+        this.city = city;
+        this.country = country;
+        this.adminId = adminId;
+        this.createdBy = createdBy;
+        this.updatedBy = updatedBy;
+        this.createdOn = createdOn;
+        this.updatedOn = updatedOn;
+        this.filePath = filePath;
+        this.password = password;
     }
 }
