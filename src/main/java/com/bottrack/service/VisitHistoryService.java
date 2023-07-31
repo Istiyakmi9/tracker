@@ -1,6 +1,5 @@
 package com.bottrack.service;
 
-import com.bottrack.model.ApiResponse;
 import com.bottrack.model.DbParameters;
 import com.bottrack.model.FilterModel;
 import com.bottrack.model.VisitHistoryModel;

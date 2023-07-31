@@ -23,4 +23,7 @@ public interface LoginRepository extends JpaRepository<Login, Long> {
 
     @Query(value = "select l.* from login l order by l.UserId desc limit 1", nativeQuery = true)
     Login getLoginLastRecord();
+    @Query(value = "select l from Login l where l.email = :email")
+    Login getLoginByEmail(@Param("email") String email);
+
 }
