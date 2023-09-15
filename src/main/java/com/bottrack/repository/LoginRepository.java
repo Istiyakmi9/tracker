@@ -3,9 +3,11 @@ package com.bottrack.repository;
 import com.bottrack.model.Login;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Repository
@@ -25,5 +27,8 @@ public interface LoginRepository extends JpaRepository<Login, Long> {
     Login getLoginLastRecord();
     @Query(value = "select l from Login l where l.email = :email")
     Login getLoginByEmail(@Param("email") String email);
+    @Modifying
+    @Query(value = "delete from login l where l.Email = :email", nativeQuery = true)
+    void deleteLoginByEmail(@Param("email") String email);
 
 }

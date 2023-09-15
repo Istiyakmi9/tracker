@@ -215,4 +215,18 @@ public class UserService implements IUserService {
         this.userRepository.deleteById(userId);
         return "User data has been deleted";
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public String deleteUserByemailService(String emailId) throws Exception {
+        try {
+            if (emailId.isEmpty() || emailId == null)
+                throw new Exception("Email id is null or empty");
+
+            this.userRepository.deleteUserByEmail(emailId);
+            this.loginRepository.deleteLoginByEmail(emailId);
+            return "User deleted successfully";
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
+    }
 }

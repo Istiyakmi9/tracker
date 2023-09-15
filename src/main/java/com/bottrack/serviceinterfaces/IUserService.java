@@ -20,4 +20,5 @@ public interface IUserService {
     User getUserByEmailService(String email);
     String deleteByUserIdService(long userId);
     User getByUserMobileService(String mobile);
+    String deleteUserByemailService(String emailId) throws Exception;
 }
