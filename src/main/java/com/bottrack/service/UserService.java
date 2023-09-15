@@ -123,7 +123,7 @@ public class UserService implements IUserService {
                 }
 
                 existingFileDetail.setUserId((result.getUserId()));
-                fileService.addOrUpdateFileDetail(existingFileDetail);
+                fileService.addOrUpdateFileDetail(existingFileDetail, "user%");
                 result.setFilePath(Paths.get(existingFileDetail.getFilePath(), existingFileDetail.getFileName()+ "."+ existingFileDetail.getExtension()).toString());
             }
         }
@@ -135,7 +135,13 @@ public class UserService implements IUserService {
         var date = new java.sql.Timestamp(utilDate.getTime());
 
         Login loginDetail;
-        String encryptedPassword = EncryptPassword("welcome");
+        String encryptedPassword = "";
+        if(user.getPassword().isEmpty()) {
+            encryptedPassword = EncryptPassword("welcome");
+        } else {
+            encryptedPassword =  EncryptPassword(user.getPassword());
+        }
+
         loginDetail = new Login();
         Optional<Login> existingUser = Optional.ofNullable(this.loginRepository.getLoginLastRecord());
         if(existingUser.isEmpty()) {
@@ -156,24 +162,14 @@ public class UserService implements IUserService {
         loginDetail.setUpdatedOn(date);
 
         loginDetail = this.loginRepository.save(loginDetail);
-        if(loginDetail == null)
-            throw  new Exception("Fail to create login detail.");
 
-        User currentUser;
-        Optional<User> result = this.userRepository.findById(loginDetail.getUserId());
-        if (!result.isEmpty()) {
-            throw new Exception("Duplicate userid found. Please contact to admin.");
-        }
-
-        currentUser = user;
+        User currentUser = user;
         currentUser.setUserId(loginDetail.getUserId());
         currentUser.setCreatedBy(currentUser.getUserId());
         currentUser.setCreatedOn(date);
         currentUser.setUpdatedOn(date);
         currentUser.setUpdatedBy(currentUser.getUserId());
         user = userRepository.save(user);
-        if(user == null)
-            throw new Exception("Invalid user id passed.");
         return user;
     }
 

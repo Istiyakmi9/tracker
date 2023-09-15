@@ -10,4 +10,5 @@ public interface ILoginService {
     ResponseEntity<Object> updateLoginByUserIdService(Login login, long userId);
     Login authenticateUserService(String emailOrMobile);
     Login getLoginByMobile(String mobile);
+    String resetPasswordService(Login login) throws Exception;
 }

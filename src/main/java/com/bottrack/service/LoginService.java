@@ -5,6 +5,7 @@ import com.bottrack.repository.LoginRepository;
 import com.bottrack.serviceinterfaces.ILoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -49,5 +50,30 @@ public class LoginService implements ILoginService {
         }
 
         return login;
+    }
+
+    public String resetPasswordService(Login login) throws Exception {
+        if (login.getEmail().isEmpty())
+            throw new Exception("invalid email id");
+
+        if (login.getPassword().isEmpty())
+            throw new Exception("invalid password");
+
+        var loginDetail = loginRepository.getLoginByEmail(login.getEmail());
+        if (loginDetail == null)
+            throw new Exception("Invalid email entered");
+
+        loginDetail.setPassword(EncryptPassword(login.getPassword()));
+        loginRepository.save(loginDetail);
+        return "Password reset successfully";
+    }
+
+    private String EncryptPassword(String password) throws Exception {
+        if(password == null || password.isEmpty()){
+            throw new Exception("Invalid password for new user.");
+        }
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.encode(password);
     }
 }

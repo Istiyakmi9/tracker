@@ -63,6 +63,12 @@ public class LoginController extends BaseController {
         }
     }
 
+    @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
+    public ResponseEntity<ApiResponse> resetPassword(@RequestBody Login loginDetail) throws Exception {
+        var result = loginService.resetPasswordService(loginDetail);
+        return ResponseEntity.ok(ApiResponse.Ok(result));
+    }
+
     private User validateCredential(Login login, Login request) throws Exception {
         User user = null;
         if (login != null) {
