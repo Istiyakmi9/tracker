@@ -70,7 +70,7 @@ public class UserController extends BaseController {
         return  ResponseEntity.ok(ApiResponse.Ok(result));
     }
 
-    @DeleteMapping("/delete/{emailId}")
+    @GetMapping("/delete/{emailId}")
     public ResponseEntity<ApiResponse> deleteByUserId(@PathVariable ("emailId") String emailId) throws Exception {
         var result = this.userService.deleteUserByemailService(emailId);
         return  ResponseEntity.ok(ApiResponse.Ok(result));
