@@ -63,9 +63,15 @@ public class LoginController extends BaseController {
         }
     }
 
+    @RequestMapping(value = "/generateResetPasswordOTP", method = RequestMethod.POST)
+    public ResponseEntity<ApiResponse> generateResetPasswordOTP(@RequestBody Login loginDetail) throws Exception {
+        var result = loginService.generateOTPForResetPassword(loginDetail);
+        return ResponseEntity.ok(ApiResponse.Ok(result));
+    }
+
     @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
     public ResponseEntity<ApiResponse> resetPassword(@RequestBody Login loginDetail) throws Exception {
-        var result = loginService.resetPasswordService(loginDetail);
+        var result = loginService.resetPasswordWithOTPService(loginDetail);
         return ResponseEntity.ok(ApiResponse.Ok(result));
     }
 
