@@ -8,6 +8,8 @@ import com.bottrack.model.User;
 import com.bottrack.repositorymodel.ResponseModal;
 import com.bottrack.service.LoginService;
 import com.bottrack.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,6 +41,8 @@ public class LoginController extends BaseController {
     @Autowired
     private UserService userService;
 
+    Logger logger = LoggerFactory.getLogger(LoginController.class);
+
     @GetMapping("/testapi")
     public ResponseEntity<ApiResponse> testApi() {
         return ResponseEntity.ok(ApiResponse.Ok("Api is up and working"));
@@ -59,7 +63,8 @@ public class LoginController extends BaseController {
             String token = jwtTokenHelper.generateToken(loginDetail);
             return ResponseEntity.ok(ApiResponse.Ok(user, token));
         } catch (Exception ex) {
-            throw ex;
+            logger.error(ex.getMessage());
+            throw new Exception("Invalid username or password.");
         }
     }
 

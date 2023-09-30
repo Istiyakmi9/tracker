@@ -101,7 +101,7 @@ public class LoginService implements ILoginService {
 
         var loginDetail = loginRepository.getLoginByEmail(login.getEmail());
         if (loginDetail == null)
-            throw new Exception("Invalid email entered");
+            throw new Exception("Your account doesn't exists with this email");
 
         int otp = getOTP();
         Calendar calendar = Calendar.getInstance();
