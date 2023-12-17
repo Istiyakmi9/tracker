@@ -134,6 +134,12 @@ public class UserService implements IUserService {
         java.util.Date utilDate = new java.util.Date();
         var date = new java.sql.Timestamp(utilDate.getTime());
 
+        if (user.getEmail().isEmpty() || user.getEmail() == null)
+            throw new Exception("Email is null");
+
+        if (user.getMobile().isEmpty() || user.getMobile() == null)
+            throw new Exception("Mobile number is null");
+
         Login loginDetail;
         String encryptedPassword = "";
         if(user.getPassword().isEmpty()) {
