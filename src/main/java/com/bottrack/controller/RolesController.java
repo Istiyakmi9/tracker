@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/roles")
+@RequestMapping("/api/roles")
 public class RolesController extends BaseController {
 
     @Autowired
