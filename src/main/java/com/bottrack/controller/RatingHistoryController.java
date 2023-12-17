@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/ratinghistory")
+@RequestMapping("/api/ratinghistory")
 public class RatingHistoryController extends BaseController{
     @Autowired
     ObjectMapper objectMapper;

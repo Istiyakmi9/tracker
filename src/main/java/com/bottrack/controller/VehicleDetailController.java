@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/vehicledetail")
+@RequestMapping("/api/vehicledetail")
 public class VehicleDetailController extends BaseController {
 
     @Autowired

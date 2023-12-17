@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 
 @RestController
-@RequestMapping("/ImageUploader")
+@RequestMapping("/api/ImageUploader")
 public class ImageUploadController {
 
     @PostMapping("/uploadImage")

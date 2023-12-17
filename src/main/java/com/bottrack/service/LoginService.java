@@ -75,9 +75,6 @@ public class LoginService implements ILoginService {
     }
 
     public String resetPasswordWithOTPService(Login login) throws Exception {
-        if (login.getEmail().isEmpty())
-            throw new Exception("invalid email id");
-
         if (login.getPassword().isEmpty())
             throw new Exception("invalid password");
 
